@@ -1,0 +1,14 @@
+<% if @object.present? %>
+  <%= @form.check_box(
+    @object,
+    @method,
+    @options.merge({ :class => "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"}),
+    @checked_value,
+    @unchecked_value) %>
+<% else %>
+  <%= @form.check_box(
+    @method,
+    @options.merge({ :class => "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"}),
+    @checked_value,
+    @unchecked_value) %>
+<% end %>

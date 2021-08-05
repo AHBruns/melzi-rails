@@ -1,0 +1,49 @@
+<%= form_with(model: contract) do |form| %>
+  <% if contract.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(contract.errors.count, "error") %> prohibited this contract from being saved:</h2>
+
+      <ul>
+        <% contract.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :submission_id, "Submission (for a contract is a direct result of a submission)" %>
+    <%= form.collection_select(:submission_id, @current_user.submissions.all, :id, lambda { |submission| id_to_s submission.id } , :include_blank => "None") %>
+  </div>
+
+  <div class="field">
+    <%= form.label :buyer_id %>
+    <%= form.collection_select(:buyer_id, @current_user.buyers.all, :id, lambda { |buyer| buyer.name.present? ? buyer.name : id_to_s(buyer.id)}) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes %>
+    <%= form.text_area :notes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :new_files %>
+    <%= form.file_field :new_files, multiple: true %>
+  </div>
+
+  <% if !contract.files.empty? then %>
+    <%= form.label :existing_files, "Existing Files (check to delete)" %>
+    <% contract.files.each do |file| %>
+      <div class="field">
+        <%= file.blob.filename %>
+        <%= form.check_box "existing_files[#{file.id}]" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+
+  
+<% end %>

@@ -1,0 +1,14 @@
+<% if @object.present? %>
+  <%= @form.select(
+    @object,
+    @method,
+    @choices,
+    @options,
+    @html_options.merge({ :class => "shadow-sm block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"})) %>
+<% else %>
+  <%= @form.select(
+      @method,
+      @choices,
+      @options,
+      @html_options.merge({ :class => "shadow-sm block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"})) %>
+<% end %>

@@ -1,0 +1,8 @@
+<div class="p-8 space-y-8">
+  <%= render(Pages::PageHeaderComponent.new) do "Edit Submission" end %>
+  <%= render(Forms::SubmissionFormComponent.new(current_user: @current_user, submission: @submission)) %>
+  <div class="flex space-x-4">
+    <%= render(ButtonComponent.new(url: @submission)) do "Show" end %>
+    <%= render(ButtonComponent.new(url: submissions_path)) do "All Submissions" end %>
+  </div>
+</div>

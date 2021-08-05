@@ -1,0 +1,36 @@
+<div class="p-8 space-y-8">
+  <%= render(Pages::PageHeaderComponent.new) do "Works" end %>
+  <%= render(DataTables::TableComponent.new(
+    headers: [
+      "Stage",
+      "Title",
+      "Submissions",
+      "Licenses"
+    ],
+    action_headers: [
+      "Show",
+      "Edit",
+      "Destroy"
+    ],
+    rows: @works.map do |work|
+      [
+        render(Misc::WorkStageBadgeComponent.new(work: work)),
+        work.title,
+        if Submission.where(work_id: work.id).present?
+          render(Misc::StyledLinkToComponent.new(name: "View (#{Submission.where(work_id: work.id).length})", options: submissions_path(:work_id => work.id)))
+        else
+          "None"
+        end,
+        if License.where(work_id: work.id).present?
+          render(Misc::StyledLinkToComponent.new(name: "View (#{License.where(work_id: work.id).length})", options: licenses_path(:work_id => work.id)))
+        else
+          "None"
+        end,
+        render(Misc::StyledLinkToComponent.new(name: "Edit", options: edit_work_path(work))),
+        render(Misc::StyledLinkToComponent.new(name: "Show", options: work_path(work))),
+        render(Misc::StyledLinkToComponent.new(name: "Destroy", options: work_path(work), html_options: { method: :delete, data: { confirm: 'Are you certain you want to delete this?' } }))
+      ]
+    end
+  )) %>
+  <%= render(ButtonComponent.new(url: new_work_path)) do "New Work" end %>
+</div>

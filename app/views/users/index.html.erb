@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+<% if flash[:error] %>
+  <div class="error"><%= flash[:error] %></div>
+<% end %>
+
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Works</th>
+      <th>Buyers</th>
+      <th>Submissions</th>
+      <th>Licenses</th>
+      <th>Contracts</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td>**********</td>
+        <td>
+          <%= link_to_works "Works", :user => user %>
+        </td>
+        <td>
+          <%= link_to_buyers "Buyers", :user => user %>
+        </td>
+        <td>
+          <%= link_to_submissions "Submissions", :user => user %>
+        </td>
+        <td>
+          <%= link_to_licenses "Licenses", :user => user %>
+        </td>
+        <td>
+          <%= link_to_contracts "Contracts", :user => user %>
+        </td>
+        <td><%= link_to 'Show', user %></td>
+        <td><%= link_to 'Assume', controller: "users", action: "assume", id: user.id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User', new_user_path %>

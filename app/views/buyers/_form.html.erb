@@ -1,0 +1,37 @@
+<%= form_with(model: buyer) do |form| %>
+  <% if buyer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(buyer.errors.count, "error") %> prohibited this buyer from being saved:</h2>
+
+      <ul>
+        <% buyer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :new_files %>
+    <%= form.file_field :new_files, multiple: true %>
+  </div>
+
+  <% if !buyer.files.empty? then %>
+    <%= form.label :existing_files, "Existing Files (check to delete)" %>
+    <% buyer.files.each do |file| %>
+      <div class="field">
+        <%= file.blob.filename %>
+        <%= form.check_box "existing_files[#{file.id}]" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

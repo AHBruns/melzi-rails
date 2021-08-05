@@ -1,0 +1,38 @@
+<div class="p-8 space-y-8">
+  <%= render(DataTables::DataCardComponent.new(title: "Submission Information")) do |c| %>
+    <% c.data_row(
+      key: "Data",
+      value: render(DataTables::DataCardComponent.new) do |c|
+        c.data_row(
+          key: "Status",
+          value: render(Misc::SubmissionStatusBadgeComponent.new(submission: @submission))
+        )
+      end
+    ) %>
+    <% c.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |c|
+        c.data_row(key: "Work", value: render(Misc::StyledLinkToComponent.new(name: @submission.work.title, options: work_path(@submission.work))))
+        c.data_row(key: "Buyer", value: render(Misc::StyledLinkToComponent.new(name: @submission.buyer.name, options: buyer_path(@submission.buyer))))
+        c.data_row(
+          key: "Contracts",
+          value: if Contract.where(submission_id: @submission.id).present?
+            render(Misc::StyledLinkToComponent.new(name: "View (#{Contract.where(submission_id: @submission.id).length})", options: contracts_path(:submission_id => @submission.id)))
+          else
+            "None"
+          end
+        )
+      end
+    ) %>
+    <% c.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @submission.files))) %>
+    <% c.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @submission))) %>
+  <% end %>
+  <div class="flex space-x-4">
+    <div>
+      <%= render(ButtonComponent.new(url: edit_submission_path(@submission))) do "Edit" end %>
+    </div>
+    <div>
+      <%= render(ButtonComponent.new(url: submissions_path)) do "All Submissions" end %>
+    </div>
+  </div>
+</div>

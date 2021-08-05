@@ -1,0 +1,5 @@
+<%= render(DataTables::DataCardComponent.new) do |c|
+  c.data_row(key: "Id", value: @object.id)
+  c.data_row(key: "Created", value: "#{time_ago_in_words(@object.created_at)} ago")
+  c.data_row(key: "Last Updated", value: "#{time_ago_in_words(@object.updated_at)} ago")
+end %>

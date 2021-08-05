@@ -1,0 +1,14 @@
+<%=
+  if @files.present?
+    render(DataTables::DataCardComponent.new) do |c|
+      @files.each do |file|
+        c.data_row(
+          key: file.blob.filename,
+          value: render(Misc::StyledLinkToComponent.new(name: "Download", options: rails_blob_path(file, disposition: "attachment")))
+        )
+      end
+    end
+  else 
+    "None"
+  end
+%>

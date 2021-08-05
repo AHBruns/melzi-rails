@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Show License</h1>
+
+<h3>Data</h3>
+
+<div class="field">
+  <label>Work</label>
+  <%= link_to_work @license.work %>
+</div>
+
+<div class="field">
+  <label>Contract</label>
+  <%= link_to_contract @license.contract %>
+</div>
+
+<h3>Associations</h3>
+
+<h3>Files</h3>
+
+<% @license.files.each do |file| %>
+  <div>
+    <% if file.representable? %>
+      <%= image_tag file.representation(resize_to_limit: [100, 100]) %>
+    <% else %>
+      <%= link_to rails_blob_path(file, disposition: "attachment") do %>
+        <%= file.blob.filename %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<h3>Metadata</h3>
+
+<div class="field">
+  <label>ID</label>
+  <%= id_to_s @license.id %>
+</div>
+
+<div class="field">
+  <label>Owner</label>
+  <%= link_to_user @license.user %>
+</div>
+
+<div class="field">
+  <label>Created At</label>
+  <span><%= @license.created_at %></span>
+</div>
+
+<div class="field">
+  <label>Last Updated At</label>
+  <span><%= @license.updated_at %></span>
+</div>
+
+<%= link_to 'Edit', edit_license_path(@license) %> |
+<%= link_to 'All Licenses', licenses_path %>

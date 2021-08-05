@@ -1,0 +1,42 @@
+<%= form_with(model: license) do |form| %>
+  <% if license.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(license.errors.count, "error") %> prohibited this license from being saved:</h2>
+
+      <ul>
+        <% license.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :contract_id %>
+    <%= form.collection_select(:contract_id, @current_user.contracts.all, :id, :id) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_id %>
+    <%= form.collection_select(:work_id, @current_user.works.all, :id, :title) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :new_files %>
+    <%= form.file_field :new_files, multiple: true %>
+  </div>
+
+  <% if !license.files.empty? then %>
+    <%= form.label :existing_files, "Existing Files (check to delete)" %>
+    <% license.files.each do |file| %>
+      <div class="field">
+        <%= file.blob.filename %>
+        <%= form.check_box "existing_files[#{file.id}]" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

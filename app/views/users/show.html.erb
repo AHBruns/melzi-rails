@@ -1,0 +1,73 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Show User</h1>
+
+<h3>Data</h3>
+
+<div class="field">
+  <label>Email</label>
+  <span><%= @user.email %></span>
+</div>
+
+<div class="field">
+  <label>Password</label>
+  <span>**********</span>
+</div>
+
+<h3>Associations</h3>
+
+<div class="field">
+  <%= link_to_submissions "Submissions", :user => @user %>
+</div>
+
+<div class="field">
+  <%= link_to_buyers "Buyers", :user => @user %>
+</div>
+
+<div class="field">
+  <%= link_to_works "Works", :user => @user %>
+</div>
+
+<div class="field">
+  <%= link_to_licenses "Licenses", :user => @user %>
+</div>
+
+<div class="field">
+  <%= link_to_contracts "Contracts", :user => @user %>
+</div>
+
+<h3>Files</h3>
+
+<% @user.files.each do |file| %>
+  <div>
+    <% if file.representable? %>
+      <%= image_tag file.representation(resize_to_limit: [100, 100]) %>
+    <% else %>
+      <%= link_to rails_blob_path(file, disposition: "attachment") do %>
+        <%= file.blob.filename %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<h3>Metadata</h3>
+
+<div class="field">
+  <label>ID</label>
+  <%= id_to_s @user.id %>
+</div>
+
+<div class="field">
+  <label>Created At</label>
+  <span><%= @user.created_at %></span>
+</div>
+
+<div class="field">
+  <label>Last Updated At</label>
+  <span><%= @user.updated_at %></span>
+</div>
+
+<hr />
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'All Users', users_path %>

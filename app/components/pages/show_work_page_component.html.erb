@@ -1,0 +1,42 @@
+<div class="p-8 space-y-8">
+  <%= render(DataTables::DataCardComponent.new(title: "Work Information")) do |c| %>
+    <% c.data_row(
+      key: "Data",
+      value: render(DataTables::DataCardComponent.new) do |c|
+        c.data_row(key: "Stage", value: render(Misc::WorkStageBadgeComponent.new(work: @work)))
+        c.data_row(key: "Title", value: @work.title)
+      end
+    ) %>
+    <% c.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |c|
+        c.data_row(
+          key: "Submissions",
+          value: if Submission.where(work_id: @work.id).present?
+            render(Misc::StyledLinkToComponent.new(name: "View (#{Submission.where(work_id: @work.id).length})", options: submissions_path(:work_id => @work.id)))
+          else
+            "None"
+          end
+        )
+        c.data_row(
+          key: "Licenses",
+          value: if License.where(work_id: @work.id).present?
+            render(Misc::StyledLinkToComponent.new(name: "View (#{Submission.where(work_id: @work.id).length})", options: licenses_path(:work_id => @work.id)))
+          else
+            "None"
+          end
+        )
+      end
+    ) %>
+    <% c.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @work.files))) %>
+    <% c.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @work))) %>
+  <% end %>
+  <div class="flex space-x-4">
+    <div>
+      <%= render(ButtonComponent.new(url: edit_work_path(@work))) do "Edit" end %>
+    </div>
+    <div>
+      <%= render(ButtonComponent.new(url: works_path)) do "All Works" end %>
+    </div>
+  </div>
+</div>
