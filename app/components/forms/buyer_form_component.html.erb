@@ -1,0 +1,44 @@
+<%= form_with(model: @buyer) do |form| %>
+  <%= render(Misc::CardComponent.new) do %>
+    <div class="p-4 space-y-4">
+      <% if @buyer.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@buyer.errors.count, "error") %> prohibited this buyer from being saved:</h2>
+
+          <ul>
+            <% @buyer.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :name, label: "Name")) do %>
+        <%= render(Inputs::TextFieldComponent.new(form: form, name: :name, value: @buyer.name)) %>
+      <% end %>
+
+      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :new_files, label: "Files To Attach")) do %>
+        <%= render(Inputs::FileFieldComponent.new(form: form, method: :new_files, options: { multiple: true }))%>
+      <% end %>
+
+      <% if !@buyer.files.empty? then %>
+        <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :existing_files, label: "Existing Files (check to delete)")) do %>
+          <ul class="flex flex-col items-start space-y-2">
+            <% @buyer.files.each do |file| %>
+              <div class="shadow-sm space-x-3 flex items-center bg-white border px-3 py-2 text-sm border-gray-300 sm:text-sm rounded-md">
+                <p>
+                  <%= file.blob.filename %>
+                </p>
+                <div>
+                  <%= render(Inputs::CheckBoxFieldComponent.new(form: form, method: "existing_files[#{file.id}]")) %>
+                </div>
+              </div>
+            <% end %>
+          </ul>
+        <% end %>
+      <% end %>
+
+      <%= render(Buttons::PrimaryButtonComponent.new(form: form)) do "Submit" end %>
+    </div>
+  <% end %>
+<% end %>

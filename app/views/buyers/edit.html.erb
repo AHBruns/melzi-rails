@@ -1,6 +1,1 @@
-<h1>Editing Buyer</h1>
-
-<%= render 'form', buyer: @buyer %>
-
-<%= link_to 'Show', @buyer %> |
-<%= link_to 'All Buyers', buyers_path %>
+<%= render(Pages::EditBuyerPageComponent.new(buyer: @buyer)) %>

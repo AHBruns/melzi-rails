@@ -1,5 +1,1 @@
-<h1>New Buyer</h1>
-
-<%= render 'form', buyer: @buyer %>
-
-<%= link_to 'All Buyers', buyers_path %>
+<%= render(Pages::NewBuyerPageComponent.new(buyer: @buyer)) %>
