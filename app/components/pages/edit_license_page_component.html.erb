@@ -1,0 +1,8 @@
+<div class="p-8 space-y-8">
+  <%= render(Pages::PageHeaderComponent.new) do "Edit License" end %>
+  <%= render(Forms::LicenseFormComponent.new(current_user: @current_user, license: @license)) %>
+  <div class="flex space-x-4">
+    <%= render(ButtonComponent.new(url: @license)) do "Show" end %>
+    <%= render(ButtonComponent.new(url: licenses_path)) do "All Licenses" end %>
+  </div>
+</div>

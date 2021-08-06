@@ -20,7 +20,7 @@
           "None"
         end,
         if Contract.where(buyer_id: buyer.id).present?
-          render(Misc::StyledLinkToComponent.new(name: "View (#{License.where(buyer_id: buyer.id).length})", options: licenses_path(:buyer_id => buyer.id)))
+          render(Misc::StyledLinkToComponent.new(name: "View (#{Contract.where(buyer_id: buyer.id).length})", options: contracts_path(:buyer_id => buyer.id)))
         else
           "None"
         end,

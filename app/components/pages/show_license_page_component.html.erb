@@ -1,0 +1,31 @@
+<div class="p-8 space-y-8">
+  <%= render(DataTables::DataCardComponent.new(title: "License Information")) do |c| %>
+    <% c.data_row(
+      key: "Data",
+      value: "None"
+    ) %>
+    <% c.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |c|
+        c.data_row(
+            key: "Contract",
+            value: render(Misc::StyledLinkToComponent.new(name: @license.contract.id, options: contract_path(@license.contract)))
+        )
+        c.data_row(
+            key: "Work",
+            value: render(Misc::StyledLinkToComponent.new(name: @license.work.title, options: work_path(@license.work)))
+        )
+      end
+    ) %>
+    <% c.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @license.files))) %>
+    <% c.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @license))) %>
+  <% end %>
+  <div class="flex space-x-4">
+    <div>
+      <%= render(ButtonComponent.new(url: edit_license_path(@license))) do "Edit" end %>
+    </div>
+    <div>
+      <%= render(ButtonComponent.new(url: licenses_path)) do "All Licenses" end %>
+    </div>
+  </div>
+</div>

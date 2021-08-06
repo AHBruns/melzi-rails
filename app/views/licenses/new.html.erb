@@ -1,5 +1,1 @@
-<h1>New License</h1>
-
-<%= render 'form', license: @license %>
-
-<%= link_to 'All Licenses', licenses_path %>
+<%= render(Pages::NewLicensePageComponent.new(current_user: @current_user, license: @license)) %>

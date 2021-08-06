@@ -1,6 +1,1 @@
-<h1>Editing License</h1>
-
-<%= render 'form', license: @license %>
-
-<%= link_to 'Show', @license %> |
-<%= link_to 'All Licenses', licenses_path %>
+<%= render(Pages::EditLicensePageComponent.new(current_user: @current_user, license: @license)) %>
