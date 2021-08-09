@@ -7,4 +7,8 @@ class Submission < ApplicationRecord
   has_many_attached :files
   
   attr_accessor :new_files, :existing_files
+
+  def short_description
+    "#{self.work.short_description} ⇒ #{self.buyer.short_description} "
+  end
 end

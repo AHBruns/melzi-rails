@@ -5,5 +5,4 @@ class Forms::LicenseFormComponent < ViewComponent::Base
     @current_user = current_user
     @license = license
   end
-
 end

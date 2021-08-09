@@ -1,1 +1,5 @@
-<%= render(Pages::NewBuyerPageComponent.new(buyer: @buyer)) %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("New Buyer") %>
+  <%= render Forms::BuyerFormComponent.new(buyer: @buyer) %>
+  <%= render Buttons::WhiteButtonComponent.new(url: buyers_path).with_content("All Buyers") %>
+</div>

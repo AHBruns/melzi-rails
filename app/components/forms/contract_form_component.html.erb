@@ -1,0 +1,31 @@
+<%= form_with(model: @contract) do |form| %>
+  <%= render Forms::BaseFormComponent.new(form: form, errors: @contract.errors) do %>
+    <%= render Inputs::LabeledFieldComponent.new(
+      form: form,
+      key: :submission_id,
+      label: "Submission (if this contract is a direct result of a submission)"
+    ) do %>
+      <%= render Inputs::CollectionSelectFieldComponent.new(
+        form: form,
+        method: :submission_id,
+        collection: @current_user.submissions,
+        value_method: :id,
+        text_method: :short_description,
+        options: { :include_blank => "None" }
+      ) %>
+    <% end %>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :buyer_id, label: "Buyer") do %>
+      <%= render Inputs::CollectionSelectFieldComponent.new(
+        form: form,
+        method: :buyer_id,
+        collection: @current_user.buyers,
+        value_method: :id,
+        text_method: :short_description
+      ) %>
+    <% end %>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :notes, label: "Notes") do %>
+      <%= render Inputs::TextFieldComponent.new(form: form, name: :notes, value: @contract.notes) %>
+    <% end %>
+    <%= render Forms::FilesSectionsComponent.new(form: form, files: @contract.files) %>
+  <% end %>
+<% end %>

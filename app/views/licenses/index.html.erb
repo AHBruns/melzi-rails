@@ -1,1 +1,24 @@
-<%= render(Pages::LicensesPageComponent.new(licenses: @licenses)) %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Licenses") %>
+  <%= render(DataTables::TableComponent.new(
+    headers: %w[Contract Work],
+    action_headers: %w[Show Edit Destroy],
+    rows: @licenses.map do |license|
+      [
+        render(Misc::ViewAssociationComponent.new(object: license.contract)),
+        render(Misc::ViewAssociationComponent.new(object: license.work)),
+        render(Misc::StyledLinkToComponent.new(name: "Edit", options: edit_license_path(license))),
+        render(Misc::StyledLinkToComponent.new(name: "Show", options: license)),
+        render(Misc::StyledLinkToComponent.new(
+          name: "Destroy",
+          options: license,
+          html_options: {
+            method: :delete,
+            data: { confirm: 'Are you certain you want to delete this?' }
+          }
+        ))
+      ]
+    end
+  )) %>
+  <%= render Buttons::WhiteButtonComponent.new(url: new_license_path).with_content("New License") %>
+</div>

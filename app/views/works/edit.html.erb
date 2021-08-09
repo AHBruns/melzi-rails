@@ -1,1 +1,8 @@
-<%= render(Pages::EditWorkPageComponent.new(work: @work)) %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Edit Work") %>
+  <%= render Forms::WorkFormComponent.new(work: @work) %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: @work).with_content("Show") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: works_path).with_content("All Works") %>
+  </div>
+</div>

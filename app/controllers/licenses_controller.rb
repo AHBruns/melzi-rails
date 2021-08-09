@@ -4,9 +4,15 @@ class LicensesController < ApplicationController
   # GET /licenses or /licenses.json
   def index
     @licenses = @current_user.licenses
-    if (params[:user_id].present?) then @licenses = @licenses.where(user_id: params[:user_id]) end
-    if (params[:work_id].present?) then @licenses = @licenses.where(work_id: params[:work_id]) end
-    if (params[:contract_id].present?) then @licenses = @licenses.where(contract_id: params[:contract_id]) end
+    if params[:user_id].present?
+      @licenses = @licenses.where(user_id: params[:user_id])
+    end
+    if params[:work_id].present?
+      @licenses = @licenses.where(work_id: params[:work_id])
+    end
+    if params[:contract_id].present?
+      @licenses = @licenses.where(contract_id: params[:contract_id])
+    end
     @licenses = @licenses.all
     p @licenses
   end
@@ -30,7 +36,9 @@ class LicensesController < ApplicationController
 
     respond_to do |format|
       if @license.save
-        if params[:license][:new_files].present? then @license.files.attach(params[:license][:new_files]) end
+        if params[:license][:new_files].present?
+          @license.files.attach(params[:license][:new_files])
+        end
 
         format.html { redirect_to @license, notice: "License was successfully created." }
         format.json { render :show, status: :created, location: @license }
@@ -45,15 +53,17 @@ class LicensesController < ApplicationController
   def update
     respond_to do |format|
       if @license.update(license_params)
-        if params[:license][:new_files].present? then @license.files.attach(params[:license][:new_files]) end
-        if params[:license][:existing_files].present? then
+        if params[:license][:new_files].present?
+          @license.files.attach(params[:license][:new_files])
+        end
+        if params[:license][:existing_files].present?
           params[:license][:existing_files].each do |id, to_delete|
-            if to_delete == "1" then
+            if to_delete == "1"
               @license.files.find(id.to_i).purge
             end
           end
         end
-        
+
         format.html { redirect_to @license, notice: "License was successfully updated." }
         format.json { render :show, status: :ok, location: @license }
       else
@@ -73,13 +83,14 @@ class LicensesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_license
-      @license = @current_user.licenses.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def license_params
-      params.fetch(:license, {}).permit(:work_id, :contract_id, existing_files: {}, new_files: [], files: [])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_license
+    @license = @current_user.licenses.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def license_params
+    params.fetch(:license, {}).permit(:work_id, :contract_id, existing_files: {}, new_files: [], files: [])
+  end
 end

@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def id_to_s(id)
-    return "ID<#{id}>"
+  def view_string(collection)
+    "View (#{collection.length})"
   end
 end

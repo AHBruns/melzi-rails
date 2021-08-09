@@ -1,10 +1,10 @@
-<% if @object.present? %>
-  <%= @form.file_field(
-    @object,
-    @method,
-    @options.merge({ :class => "shadow-sm bg-white border block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"})) %>
-<% else %>
-  <%= @form.file_field(
-    @method,
-    @options.merge({ :class => "shadow-sm bg-white border block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"})) %>
-<% end %>
+<%= if @object.present?
+     @form.file_field(
+       @object,
+       @method,
+       @options.merge({ class: @class }))
+   else
+     @form.file_field(
+       @method,
+       @options.merge({ class: @class }))
+   end %>

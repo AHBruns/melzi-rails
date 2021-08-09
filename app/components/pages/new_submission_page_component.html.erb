@@ -1,5 +1,0 @@
-<div class="p-8 space-y-8">
-  <%= render(Pages::PageHeaderComponent.new) do "New Submission" end %>
-  <%= render(Forms::SubmissionFormComponent.new(current_user: @current_user, submission: @submission)) %>
-  <%= render(ButtonComponent.new(url: submissions_path)) do "All Submissions" end %>
-</div>

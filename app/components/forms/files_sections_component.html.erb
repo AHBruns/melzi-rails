@@ -1,0 +1,24 @@
+<%= render Inputs::LabeledFieldComponent.new(form: @form, key: :new_files, label: "Files To Attach") do %>
+  <%= render Inputs::FileFieldComponent.new(form: @form, method: :new_files, options: { multiple: true }) %>
+<% end %>
+
+<% unless @files.empty? %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :existing_files,
+    label: "Existing Files (check to delete)"
+  ) do %>
+    <ul class="flex flex-col items-start space-y-2">
+      <% @files.each do |file| %>
+        <div class="shadow-sm space-x-3 flex items-center bg-white border px-3 py-2 text-sm border-gray-300 sm:text-sm rounded-md">
+          <p>
+            <%= file.blob.filename %>
+          </p>
+          <div>
+            <%= render Inputs::CheckBoxFieldComponent.new(form: @form, method: "existing_files[#{file.id}]") %>
+          </div>
+        </div>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

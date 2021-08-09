@@ -1,1 +1,39 @@
-<%= render(Pages::ShowSubmissionPageComponent.new(submission: @submission)) %>
+<div class="p-8 space-y-8">
+  <%= render DataTables::DataCardComponent.new(title: "Submission Information") do |rootComp|
+    rootComp.data_row(
+      key: "Data",
+      value: render(DataTables::DataCardComponent.new) do |dataComp|
+        dataComp.data_row(
+          key: "Status",
+          value: render(Misc::SubmissionStatusBadgeComponent.new(submission: @submission))
+        )
+      end
+    )
+    rootComp.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |associationsComp|
+        associationsComp.data_row(
+          key: "Work",
+          value: render(Misc::ViewAssociationComponent.new(object: @submission.work))
+        )
+        associationsComp.data_row(
+          key: "Buyer",
+          value: render(Misc::ViewAssociationComponent.new(object: @submission.buyer))
+        )
+        associationsComp.data_row(
+          key: "Contracts",
+          value: render(Misc::ViewMultAssociationComponent.new(
+            collection: @submission.contracts,
+            options: contracts_path(submission_id: @submission.id)
+          ))
+        )
+      end
+    )
+    rootComp.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @submission.files)))
+    rootComp.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @submission)))
+  end %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: edit_submission_path(@submission)).with_content("Edit") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: submissions_path).with_content("All Submissions") %>
+  </div>
+</div>

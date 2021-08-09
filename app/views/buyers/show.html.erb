@@ -1,1 +1,35 @@
-<%= render(Pages::ShowBuyerPageComponent.new(buyer: @buyer)) %>
+<div class="p-8 space-y-8">
+  <%= render DataTables::DataCardComponent.new(title: "Buyer Information") do |rootComp|
+    rootComp.data_row(
+      key: "Data",
+      value: (render DataTables::DataCardComponent.new do |dataComp|
+        dataComp.data_row(key: "Name", value: @buyer.name)
+      end),
+    )
+    rootComp.data_row(
+      key: "Associations",
+      value: (render DataTables::DataCardComponent.new do |associationsComp|
+        associationsComp.data_row(
+          key: "Submissions",
+          value: (render Misc::ViewMultAssociationComponent.new(
+            collection: @buyer.submissions,
+            options: submissions_path(buyer_id: @buyer.id)
+          ))
+        )
+        associationsComp.data_row(
+          key: "Contracts",
+          value: (render Misc::ViewMultAssociationComponent.new(
+            collection: @buyer.contracts,
+            options: contracts_path(buyer_id: @buyer.id)
+          ))
+        )
+      end)
+    )
+    rootComp.data_row(key: "Files", value: (render DataTables::FilesCardComponent.new(files: @buyer.files)))
+    rootComp.data_row(key: "Metadata", value: (render DataTables::MetadataCardComponent.new(object: @buyer)))
+  end %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: edit_buyer_path(@buyer)).with_content("Edit") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: buyers_path).with_content("All Buyers") %>
+  </div>
+</div>

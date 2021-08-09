@@ -4,5 +4,4 @@ class Forms::BuyerFormComponent < ViewComponent::Base
   def initialize(buyer:)
     @buyer = buyer
   end
-
 end

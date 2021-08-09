@@ -1,7 +1,7 @@
-<%= render(Misc::BadgeComponent.new(
+<%= render Misc::BadgeComponent.new(
   color_classes: {
     "Draft" => "bg-yellow-100 text-yellow-800",
     "Written" => "bg-green-100 text-green-800",
   },
   key: @work.stage
-)) do @work.stage end %>
+).with_content(@work.stage) %>

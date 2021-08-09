@@ -1,39 +1,29 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Contracts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Submission</th>
-      <th>Buyer</th>
-      <th>Notes</th>
-      <th>Licenses</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @contracts.each do |contract| %>
-      <tr>
-        <td>
-          <% if contract.submission_id.present? then %>
-            <%= link_to_submission contract.submission %>
-          <% else %>
-            <i>None</i>
-          <% end %>
-        </td>
-        <td><%= link_to_buyer contract.buyer %></td>
-        <td><%= trunc_s contract.notes, 28 %></td>
-        <td><%= link_to_licenses "Licenses", :contract => contract %></td>
-        <td><%= link_to 'Show', contract %></td>
-        <td><%= link_to 'Edit', edit_contract_path(contract) %></td>
-        <td><%= link_to 'Destroy', contract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Contract', new_contract_path %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Contracts") %>
+  <%= render DataTables::TableComponent.new(
+    headers: %w[Submission Buyer Licenses Notes],
+    action_headers: %w[Show Edit Destroy],
+    rows: @contracts.map do |contract|
+      [
+        render(Misc::ViewAssociationComponent.new(object: contract.submission)),
+        render(Misc::ViewAssociationComponent.new(object: contract.buyer)),
+        render(Misc::ViewMultAssociationComponent.new(
+          collection: contract.licenses,
+          options: licenses_path(contract_id: contract.id)
+        )),
+        contract.notes,
+        render(Misc::StyledLinkToComponent.new(name: "Edit", options: edit_contract_path(contract))),
+        render(Misc::StyledLinkToComponent.new(name: "Show", options: contract)),
+        render(Misc::StyledLinkToComponent.new(
+          name: "Destroy",
+          options: contract,
+          html_options: {
+            method: :delete,
+            data: { confirm: 'Are you certain you want to delete this?' }
+          }
+        ))
+      ]
+    end
+  ) %>
+  <%= render Buttons::WhiteButtonComponent.new(url: new_contract_path).with_content("New Contract") %>
+</div>

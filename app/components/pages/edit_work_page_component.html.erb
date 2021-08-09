@@ -1,8 +1,0 @@
-<div class="p-8 space-y-8">
-  <%= render(Pages::PageHeaderComponent.new) do "Edit Work" end %>
-  <%= render(Forms::WorkFormComponent.new(work: @work)) %>
-  <div class="flex space-x-4">
-    <%= render(ButtonComponent.new(url: @work)) do "Show" end %>
-    <%= render(ButtonComponent.new(url: works_path)) do "All Works" end %>
-  </div>
-</div>

@@ -1,1 +1,8 @@
-<%= render(Pages::EditSubmissionPageComponent.new(current_user: @current_user, submission: @submission)) %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Edit Submission") %>
+  <%= render Forms::SubmissionFormComponent.new(current_user: @current_user, submission: @submission) %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: @submission).with_content("Show") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: submissions_path).with_content("All Submissions") %>
+  </div>
+</div>

@@ -1,8 +1,0 @@
-<div class="p-8 space-y-8">
-  <%= render(Pages::PageHeaderComponent.new) do "Edit Buyer" end %>
-  <%= render(Forms::BuyerFormComponent.new(buyer: @buyer)) %>
-  <div class="flex space-x-4">
-    <%= render(ButtonComponent.new(url: @buyer)) do "Show" end %>
-    <%= render(ButtonComponent.new(url: buyers_path)) do "All Buyers" end %>
-  </div>
-</div>

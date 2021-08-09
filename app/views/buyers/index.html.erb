@@ -1,1 +1,31 @@
-<%= render(Pages::BuyersPageComponent.new(buyers: @buyers)) %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Buyers") %>
+  <%= render DataTables::TableComponent.new(
+    headers: %w[Name Submissions Contracts],
+    action_headers: %w[Show Edit Destroy],
+    rows: @buyers.map do |buyer|
+      [
+        buyer.name,
+        render(Misc::ViewMultAssociationComponent.new(
+          collection: buyer.submissions,
+          options: submissions_path(buyer_id: buyer.id)
+        )),
+        render(Misc::ViewMultAssociationComponent.new(
+          collection: buyer.contracts,
+          options:  contracts_path(buyer_id: buyer.id)
+        )),
+        render(Misc::StyledLinkToComponent.new(name: "Edit", options: edit_buyer_path(buyer))),
+        render(Misc::StyledLinkToComponent.new(name: "Show", options: buyer)),
+        render(Misc::StyledLinkToComponent.new(
+          name: "Destroy",
+          options: buyer,
+          html_options: {
+            method: :delete,
+            data: { confirm: 'Are you certain you want to delete this?' }
+          }
+        ))
+      ]
+    end
+  ) %>
+  <%= render Buttons::WhiteButtonComponent.new(url: new_buyer_path).with_content("New Buyer") %>
+</div>

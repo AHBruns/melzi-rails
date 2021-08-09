@@ -21,7 +21,9 @@ class WorksController < ApplicationController
         @work = @current_user.works.build(work_params)
 
         if @work.save
-          if params[:work][:new_files].present? then @work.files.attach(params[:work][:new_files]) end
+          if params[:work][:new_files].present?
+            @work.files.attach(params[:work][:new_files])
+          end
 
           format.html { redirect_to @work, notice: "Work was successfully created." }
           format.json { render :show, status: :created, location: @work }
@@ -37,15 +39,17 @@ class WorksController < ApplicationController
     respond_to do |format|
       ApplicationRecord.transaction do
         if @work.update(work_params)
-          if params[:work][:new_files].present? then @work.files.attach(params[:work][:new_files]) end
-          if params[:work][:existing_files].present? then
+          if params[:work][:new_files].present?
+            @work.files.attach(params[:work][:new_files])
+          end
+          if params[:work][:existing_files].present?
             params[:work][:existing_files].each do |id, to_delete|
-              if to_delete == "1" then
+              if to_delete == "1"
                 @work.files.find(id.to_i).purge
               end
             end
           end
-  
+
           format.html { redirect_to @work, notice: "Work was successfully updated." }
           format.json { render :show, status: :ok, location: @work }
         else
@@ -65,11 +69,12 @@ class WorksController < ApplicationController
   end
 
   private
-    def set_work
-      @work = @current_user.works.find(params[:id])
-    end
 
-    def work_params
-      params.fetch(:work, {}).permit(:stage, :title, existing_files: {}, new_files: [], files: [])
-    end
+  def set_work
+    @work = @current_user.works.find(params[:id])
+  end
+
+  def work_params
+    params.fetch(:work, {}).permit(:stage, :title, existing_files: {}, new_files: [], files: [])
+  end
 end

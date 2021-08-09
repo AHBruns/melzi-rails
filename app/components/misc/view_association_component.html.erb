@@ -1,0 +1,9 @@
+<%= if @object.present?
+      render(Misc::StyledLinkToComponent.new(
+        name: @object.short_description,
+        options: @object,
+        html_options: @html_options
+      ))
+    else
+      "None"
+    end %>

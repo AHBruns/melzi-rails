@@ -1,69 +1,34 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Show Contract</h1>
-
-<h3>Data</h3>
-
-<div class="field">
-  <label>Buyer</label>
-  <%= link_to_buyer @contract.buyer %>
-</div>
-
-<div class="field">
-  <label>Submission</label>
-  <% if @contract.submission_id.present? then %>
-    <%= link_to_submission @contract.submission %>
-  <% else %>
-    <i>None</i>
-  <% end %>
-</div>
-
-<div class="field">
-  <label>Notes</label>
-  <pre><%= @contract.notes %></pre>
-</div>
-
-<h3>Associations</h3>
-
-<div class="field">
-  <%= link_to_licenses "Licenses", :contract => @contract %>
-</div>
-
-<h3>Files</h3>
-
-<% @contract.files.each do |file| %>
-  <div>
-    <% if file.representable? %>
-      <%= image_tag file.representation(resize_to_limit: [100, 100]) %>
-    <% else %>
-      <%= link_to rails_blob_path(file, disposition: "attachment") do %>
-        <%= file.blob.filename %>
-      <% end %>
-    <% end %>
+<div class="p-8 space-y-8">
+  <%= render DataTables::DataCardComponent.new(title: "Contract Information") do |rootComp|
+    rootComp.data_row(
+      key: "Notes",
+      value: @contract.notes,
+    )
+    rootComp.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |associationsComp|
+        associationsComp.data_row(
+          key: "Submission",
+          value: render(Misc::ViewAssociationComponent.new(object: @contract.submission))
+        )
+        associationsComp.data_row(
+          key: "Buyer",
+          value: render(Misc::ViewAssociationComponent.new(object: @contract.buyer))
+        )
+        associationsComp.data_row(
+          key: "Licenses",
+          value: render(Misc::ViewMultAssociationComponent.new(
+            collection: @contract.licenses,
+            options: licenses_path(contract_id: @contract.id)
+          ))
+        )
+      end
+    )
+    rootComp.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @contract.files)))
+    rootComp.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @contract)))
+  end %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: edit_contract_path(@contract)).with_content("Edit") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: contracts_path).with_content("All Contracts") %>
   </div>
-<% end %>
-
-<h3>Metadata</h3>
-
-<div class="field">
-  <label>ID</label>
-  <%= id_to_s @contract.id %>
 </div>
-
-<div class="field">
-  <label>Owner</label>
-  <%= link_to_user @contract.user %>
-</div>
-
-<div class="field">
-  <label>Created At</label>
-  <span><%= @contract.created_at %></span>
-</div>
-
-<div class="field">
-  <label>Last Updated At</label>
-  <span><%= @contract.updated_at %></span>
-</div>
-
-<%= link_to 'Edit', edit_contract_path(@contract) %> |
-<%= link_to 'All Contracts', contracts_path %>

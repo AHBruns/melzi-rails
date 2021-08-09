@@ -5,4 +5,8 @@ class Buyer < ApplicationRecord
   has_many_attached :files
   
   attr_accessor :new_files, :existing_files
+
+  def short_description
+    self.name
+  end
 end

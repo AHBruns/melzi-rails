@@ -1,6 +1,8 @@
-<h1>Editing Contract</h1>
-
-<%= render 'form', contract: @contract %>
-
-<%= link_to 'Show', @contract %> |
-<%= link_to 'All Contracts', contracts_path %>
+<div class="p-8 space-y-8">
+  <%= render Pages::PageHeaderComponent.new.with_content("Edit Contract") %>
+  <%= render Forms::ContractFormComponent.new(current_user: @current_user, contract: @contract) %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: @contract).with_content("Show") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: contracts_path).with_content("All Contracts") %>
+  </div>
+</div>

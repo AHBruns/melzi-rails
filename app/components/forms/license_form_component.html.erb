@@ -1,48 +1,23 @@
 <%= form_with(model: @license) do |form| %>
-  <%= render(Misc::CardComponent.new) do %>
-    <div class="p-4 space-y-4">
-      <% if @license.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@license.errors.count, "error") %> prohibited this work from being saved:</h2>
-
-          <ul>
-            <% @license.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :contract_id, label: "Contract")) do %>
-        <%= render(Inputs::CollectionSelectFieldComponent.new(form: form, method: :contract_id, collection: @current_user.contracts, value_method: :id, text_method: :id)) %>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :work_id, label: "Work")) do %>
-        <%= render(Inputs::CollectionSelectFieldComponent.new(form: form, method: :work_id, collection: @current_user.works, value_method: :id, text_method: :title)) %>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :new_files, label: "Files To Attach")) do %>
-        <%= render(Inputs::FileFieldComponent.new(form: form, method: :new_files, options: { multiple: true }))%>
-      <% end %>
-
-      <% if !@license.files.empty? then %>
-        <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :existing_files, label: "Existing Files (check to delete)")) do %>
-          <ul class="flex flex-col items-start space-y-2">
-            <% @license.files.each do |file| %>
-              <div class="shadow-sm space-x-3 flex items-center bg-white border px-3 py-2 text-sm border-gray-300 sm:text-sm rounded-md">
-                <p>
-                  <%= file.blob.filename %>
-                </p>
-                <div>
-                  <%= render(Inputs::CheckBoxFieldComponent.new(form: form, method: "existing_files[#{file.id}]")) %>
-                </div>
-              </div>
-            <% end %>
-          </ul>
-        <% end %>
-      <% end %>
-
-      <%= render(Buttons::PrimaryButtonComponent.new(form: form)) do "Submit" end %>
+  <%= render Forms::BaseFormComponent.new(form: form, errors: @license.errors) do %>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :contract_id, label: "Contract") do %>
+      <%= render Inputs::CollectionSelectFieldComponent.new(
+        form: form,
+        method: :contract_id,
+        collection: @current_user.contracts,
+        value_method: :id,
+        text_method: :short_description
+      ) %>
     <% end %>
-  </div>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :work_id, label: "Work") do %>
+      <%= render Inputs::CollectionSelectFieldComponent.new(
+        form: form,
+        method: :work_id,
+        collection: @current_user.works,
+        value_method: :id,
+        text_method: :short_description
+      ) %>
+    <% end %>
+    <%= render Forms::FilesSectionsComponent.new(form: form, files: @license.files) %>
+  <% end %>
 <% end %>

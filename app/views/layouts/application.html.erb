@@ -70,8 +70,8 @@
             <!-- Profile dropdown -->
             <div class="flex-shrink-0 relative ml-4">
               <div class="flex space-x-4">
-                <%= render(ButtonComponent.new(url: edit_user_path(@current_user))) do "Settings" end%>
-                <%= render(ButtonComponent.new(url: { controller: :profiles, action: :unauthenticate })) do "Logout" end %>
+                <%= render(Buttons::WhiteButtonComponent.new(url: edit_user_path(@current_user))) do "Settings" end%>
+                <%= render(Buttons::WhiteButtonComponent.new(url: { controller: :profiles, action: :unauthenticate })) do "Logout" end %>
               </div>
 
               <!--

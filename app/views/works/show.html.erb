@@ -1,1 +1,36 @@
-<%= render(Pages::ShowWorkPageComponent.new(work: @work)) %>
+<div class="p-8 space-y-8">
+  <%= render DataTables::DataCardComponent.new(title: "Work Information") do |rootComp|
+    rootComp.data_row(
+      key: "Data",
+      value: render(DataTables::DataCardComponent.new) do |dataComp|
+        dataComp.data_row(key: "Stage", value: render(Misc::WorkStageBadgeComponent.new(work: @work)))
+        dataComp.data_row(key: "Title", value: @work.title)
+      end
+    )
+    rootComp.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |associationsComp|
+        associationsComp.data_row(
+          key: "Submissions",
+          value: render(Misc::ViewMultAssociationComponent.new(
+            collection: @work.submissions,
+            options: submissions_path(work_id: @work.id)
+          ))
+        )
+        associationsComp.data_row(
+          key: "Licenses",
+          value: render(Misc::ViewMultAssociationComponent.new(
+            collection: @work.licenses,
+            options: licenses_path(work_id: @work.id)
+          ))
+        )
+      end
+    )
+    rootComp.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @work.files)))
+    rootComp.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @work)))
+  end %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: edit_work_path(@work)).with_content("Edit") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: works_path).with_content("All Works") %>
+  </div>
+</div>

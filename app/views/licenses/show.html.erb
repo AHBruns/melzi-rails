@@ -1,1 +1,27 @@
-<%= render(Pages::ShowLicensePageComponent.new(license: @license)) %>
+<div class="p-8 space-y-8">
+  <%= render DataTables::DataCardComponent.new(title: "License Information") do |rootComp|
+    rootComp.data_row(
+      key: "Data",
+      value: "None"
+    )
+    rootComp.data_row(
+      key: "Associations",
+      value: render(DataTables::DataCardComponent.new) do |associationsComp|
+        associationsComp.data_row(
+          key: "Contract",
+          value: render(Misc::ViewAssociationComponent.new(object: @license.contract))
+        )
+        associationsComp.data_row(
+          key: "Work",
+          value: render(Misc::ViewAssociationComponent.new(object: @license.work))
+        )
+      end
+    )
+    rootComp.data_row(key: "Files", value: render(DataTables::FilesCardComponent.new(files: @license.files)))
+    rootComp.data_row(key: "Metadata", value: render(DataTables::MetadataCardComponent.new(object: @license)))
+  end %>
+  <div class="flex space-x-4">
+    <%= render Buttons::WhiteButtonComponent.new(url: edit_license_path(@license)).with_content("Edit") %>
+    <%= render Buttons::WhiteButtonComponent.new(url: licenses_path).with_content("All Licenses") %>
+  </div>
+</div>

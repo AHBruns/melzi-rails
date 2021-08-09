@@ -5,36 +5,33 @@ class UsersController < ApplicationController
   skip_before_action :require_current_user, only: [:index, :show, :new, :create, :assume]
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  # GET /users or /users.json
   def index
     @users = User.all
   end
 
-  # GET /users/1 or /users/1.json
   def show
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
   def edit
   end
 
-  # POST /users or /users.json
   def create
     salt = SecureRandom.hex
     @user = User.new(
       email: user_params[:email],
       salt: salt,
-      salted_password_hash: Digest::SHA512.hexdigest(salt + user_params[:password])
+      salted_password_hash: Digest::SHA2.new(512).hexdigest(salt + user_params[:password])
     )
 
     respond_to do |format|
       if @user.save
-        if params[:user][:new_files].present? then @user.files.attach(params[:user][:new_files]) end
+        if params[:user][:new_files].present?
+          @user.files.attach(params[:user][:new_files])
+        end
 
         format.html { redirect_to @user, notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
@@ -45,9 +42,8 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
   def update
-    if @current_user.id != @user.id then
+    if @current_user.id != @user.id
       respond_to do |format|
         format.html { redirect_to users_url, notice: "You can't edit a user you aren't logged into." }
         format.json { head :no_content }
@@ -56,12 +52,18 @@ class UsersController < ApplicationController
       respond_to do |format|
         if @user.update(
           email: user_params[:email],
-          salted_password_hash: if !user_params[:password].blank? then Digest::SHA512.hexdigest(@user.salt + user_params[:password]) else @user.salted_password_hash end
+          salted_password_hash: if !user_params[:password].blank?
+                                  Digest::SHA2.new(512).hexdigest(@user.salt + user_params[:password])
+                                else
+                                  @user.salted_password_hash
+                                end
         )
-          if params[:user][:new_files].present? then @user.files.attach(params[:user][:new_files]) end
-          if params[:user][:existing_files].present? then
+          if params[:user][:new_files].present?
+            @user.files.attach(params[:user][:new_files])
+          end
+          if params[:user][:existing_files].present?
             params[:user][:existing_files].each do |id, to_delete|
-              if to_delete == "1" then
+              if to_delete == "1"
                 @user.files.find(id.to_i).purge
               end
             end
@@ -77,10 +79,9 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1 or /users/1.json
   def destroy
     respond_to do |format|
-      if @current_user == @user then
+      if @current_user == @user
         @user.destroy
         session.delete(:user_id)
         format.html { redirect_to users_url, notice: "User was successfully destroyed." }
@@ -97,7 +98,7 @@ class UsersController < ApplicationController
     set_current_user
     p @current_user
     respond_to do |format|
-      if @current_user.present? then
+      if @current_user.present?
         format.html { redirect_to users_url, notice: "User was successfully logged in." }
         format.json { head :no_content }
       else
@@ -117,11 +118,12 @@ class UsersController < ApplicationController
   end
 
   private
-    def set_user
-      @user = User.find(params[:id])
-    end
 
-    def user_params
-      params.fetch(:user, {}).permit(:email, :password, existing_files: {}, new_files: [], files: [])
-    end
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def user_params
+    params.fetch(:user, {}).permit(:email, :password, existing_files: {}, new_files: [], files: [])
+  end
 end

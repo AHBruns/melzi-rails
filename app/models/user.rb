@@ -13,6 +13,10 @@ class User < ApplicationRecord
   before_create :populate_salt, if: :salt.blank?
   before_create :populate_salted_password_hash, if: :salted_password_hash.blank?
 
+  def short_description
+    self.email
+  end
+
   def check_password(password)
     self.salted_password_hash == self.generate_salted_password_hash(password)
   end

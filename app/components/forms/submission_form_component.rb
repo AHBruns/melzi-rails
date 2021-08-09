@@ -5,5 +5,4 @@ class Forms::SubmissionFormComponent < ViewComponent::Base
     @current_user = current_user
     @submission = submission
   end
-
 end

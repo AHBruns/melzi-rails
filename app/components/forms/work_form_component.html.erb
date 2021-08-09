@@ -1,48 +1,11 @@
-<%= form_with model: @work do |form| %>
-  <%= render(Misc::CardComponent.new) do %>
-    <div class="p-4 space-y-4">
-      <% if @work.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@work.errors.count, "error") %> prohibited this work from being saved:</h2>
-
-          <ul>
-            <% @work.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :stage, label: "Stage")) do %>
-        <%= render(Inputs::SelectFieldComponent.new(form: form, method: :stage, choices: Work.stages.keys)) %>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :title, label: "Title")) do %>
-        <%= render(Inputs::TextFieldComponent.new(form: form, name: :title, value: @work.title)) %>
-      <% end %>
-
-      <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :new_files, label: "Files To Attach")) do %>
-        <%= render(Inputs::FileFieldComponent.new(form: form, method: :new_files, options: { multiple: true }))%>
-      <% end %>
-
-      <% if !@work.files.empty? then %>
-        <%= render(Inputs::LabeledFieldComponent.new(form: form, key: :existing_files, label: "Existing Files (check to delete)")) do %>
-          <ul class="flex flex-col items-start space-y-2">
-            <% @work.files.each do |file| %>
-              <div class="shadow-sm space-x-3 flex items-center bg-white border px-3 py-2 text-sm border-gray-300 sm:text-sm rounded-md">
-                <p>
-                  <%= file.blob.filename %>
-                </p>
-                <div>
-                  <%= render(Inputs::CheckBoxFieldComponent.new(form: form, method: "existing_files[#{file.id}]")) %>
-                </div>
-              </div>
-            <% end %>
-          </ul>
-        <% end %>
-      <% end %>
-
-      <%= render(Buttons::PrimaryButtonComponent.new(form: form)) do "Submit" end %>
+<%= form_with(model: @work) do |form| %>
+  <%= render Forms::BaseFormComponent.new(form: form, errors: @work.errors) do %>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :stage, label: "Stage") do %>
+      <%= render Inputs::SelectFieldComponent.new(form: form, method: :stage, choices: Work.stages.keys) %>
     <% end %>
-  </div>
+    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :title, label: "Title") do %>
+      <%= render Inputs::TextFieldComponent.new(form: form, name: :title, value: @work.title) %>
+    <% end %>
+    <%= render Forms::FilesSectionsComponent.new(form: form, files: @work.files) %>
+  <% end %>
 <% end %>

@@ -4,9 +4,15 @@ class ContractsController < ApplicationController
   # GET /contracts or /contracts.json
   def index
     @contracts = @current_user.contracts
-    if (params[:user_id].present?) then @contracts.where(user_id: params[:user_id]) end
-    if (params[:buyer_id].present?) then @contracts.where(buyer_id: params[:buyer_id]) end
-    if (params[:submission_id].present?) then @contracts.where(submission_id: params[:submission_id]) end
+    if params[:user_id].present?
+      @contracts.where(user_id: params[:user_id])
+    end
+    if params[:buyer_id].present?
+      @contracts.where(buyer_id: params[:buyer_id])
+    end
+    if params[:submission_id].present?
+      @contracts.where(submission_id: params[:submission_id])
+    end
     @contracts = @contracts.all
   end
 
@@ -31,8 +37,10 @@ class ContractsController < ApplicationController
 
     respond_to do |format|
       if @contract.save
-        if params[:contract][:new_files].present? then @contract.files.attach(params[:contract][:new_files]) end
-                
+        if params[:contract][:new_files].present?
+          @contract.files.attach(params[:contract][:new_files])
+        end
+
         format.html { redirect_to @contract, notice: "Contract was successfully created." }
         format.json { render :show, status: :created, location: @contract }
       else
@@ -48,10 +56,12 @@ class ContractsController < ApplicationController
 
     respond_to do |format|
       if @contract.update(contract_params)
-        if params[:contract][:new_files].present? then @contract.files.attach(params[:contract][:new_files]) end
-        if params[:contract][:existing_files].present? then
+        if params[:contract][:new_files].present?
+          @contract.files.attach(params[:contract][:new_files])
+        end
+        if params[:contract][:existing_files].present?
           params[:contract][:existing_files].each do |id, to_delete|
-            if to_delete == "1" then
+            if to_delete == "1"
               @contract.files.find(id.to_i).purge
             end
           end
@@ -83,13 +93,14 @@ class ContractsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contract
-      @contract = @current_user.contracts.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def contract_params
-      params.fetch(:contract, {}).permit(:notes, :buyer_id, :submission_id, existing_files: {}, new_files: [], files: [])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_contract
+    @contract = @current_user.contracts.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def contract_params
+    params.fetch(:contract, {}).permit(:notes, :buyer_id, :submission_id, existing_files: {}, new_files: [], files: [])
+  end
 end

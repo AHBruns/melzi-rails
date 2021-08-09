@@ -4,5 +4,4 @@ class Forms::WorkFormComponent < ViewComponent::Base
   def initialize(work:)
     @work = work
   end
-
 end

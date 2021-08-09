@@ -1,5 +1,0 @@
-<div class="p-8 space-y-8">
-  <%= render(Pages::PageHeaderComponent.new) do "New Work" end %>
-  <%= render(Forms::WorkFormComponent.new(work: @work)) %>
-  <%= render(ButtonComponent.new(url: works_path)) do "All Works" end %>
-</div>

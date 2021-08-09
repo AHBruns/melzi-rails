@@ -1,0 +1,9 @@
+<%= if @collection.present?
+      render Misc::StyledLinkToComponent.new(
+        name: helpers.view_string(@collection),
+        options: @options,
+        html_options: @html_options
+      )
+    else
+      "None"
+    end %>
