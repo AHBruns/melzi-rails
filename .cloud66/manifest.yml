@@ -1,4 +1,4 @@
 rails:
   configuration:
     node_version: "12.13"
-    asset_pipeline_precompile: false
+    asset_pipeline_precompile: true
