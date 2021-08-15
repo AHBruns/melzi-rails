@@ -7,6 +7,7 @@ class Submission < ApplicationRecord
   has_many_attached :files
   
   attr_accessor :new_files, :existing_files
+  accepts_nested_attributes_for :contracts
 
   def short_description
     "#{self.work.short_description} ⇒ #{self.buyer.short_description} "

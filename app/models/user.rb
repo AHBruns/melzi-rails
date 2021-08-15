@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many_attached :files
   
   attr_accessor :password, :new_files, :existing_files
+  accepts_nested_attributes_for :buyers, :submissions, :works, :contracts, :licenses
 
   validates :email, uniqueness: true
 

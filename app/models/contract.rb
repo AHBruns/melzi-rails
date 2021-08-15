@@ -7,6 +7,7 @@ class Contract < ApplicationRecord
   has_many_attached :files
   
   attr_accessor :new_files, :existing_files
+  accepts_nested_attributes_for :licenses, :works
 
   def short_description
     "Contract With #{self.buyer.short_description} (#{self.id})"
