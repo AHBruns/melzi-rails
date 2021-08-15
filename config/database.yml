@@ -26,6 +26,16 @@
 
 ##############
 
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: defaultdb
+  pool: 5
+  username: doadmin
+  password: bvjebyb5nirdsa9g
+  host: "private-melzi-prd-db-do-user-5046031-0.b.db.ondigitalocean.com"
+  port: 25060
+
 development:
   adapter: postgresql
   encoding: unicode
