@@ -1,11 +1,5 @@
 <%= form_with(model: @work) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @work.errors) do %>
-    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :stage, label: "Stage") do %>
-      <%= render Inputs::SelectFieldComponent.new(form: form, method: :stage, choices: Work.stages.keys) %>
-    <% end %>
-    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :title, label: "Title") do %>
-      <%= render Inputs::TextFieldComponent.new(form: form, name: :title, value: @work.title) %>
-    <% end %>
-    <%= render Forms::FilesSectionsComponent.new(form: form, files: @work.files) %>
+    <%= render Forms::WorkFieldsetComponent.new(form: form, work: @work, current_user: @current_user) %>
   <% end %>
 <% end %>

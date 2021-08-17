@@ -1,106 +1,69 @@
 class ContractsController < ApplicationController
   before_action :set_contract, only: %i[ show edit update destroy ]
 
-  # GET /contracts or /contracts.json
   def index
     @contracts = @current_user.contracts
-    if params[:user_id].present?
-      @contracts.where(user_id: params[:user_id])
-    end
-    if params[:buyer_id].present?
-      @contracts.where(buyer_id: params[:buyer_id])
-    end
-    if params[:submission_id].present?
-      @contracts.where(submission_id: params[:submission_id])
-    end
-    @contracts = @contracts.all
+    @contracts = @contracts.find_by_buyer_id(params[:buyer_id]) if params[:buyer_id].present?
+    @contracts = @contracts.find_by_submission_id(params[:submission_id]) if params[:submission_id].present?
   end
 
-  # GET /contracts/1 or /contracts/1.json
-  def show
-  end
+  def show; end
 
-  # GET /contracts/new
   def new
     @contract = Contract.new
   end
 
-  # GET /contracts/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /contracts or /contracts.json
   def create
-    @contract = @current_user.contracts.create(contract_params)
+    @contract = @current_user.contracts.create_with_files(
+      contract_params,
+      contract_params[:new_files],
+      params[:contract][:existing_files]
+    )
 
-    # @contract.files.attach(params[:files])
-
-    respond_to do |format|
-      if @contract.save
-        if params[:contract][:new_files].present?
-          @contract.files.attach(params[:contract][:new_files])
-        end
-
-        format.html { redirect_to @contract, notice: "Contract was successfully created." }
-        format.json { render :show, status: :created, location: @contract }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @contract.errors, status: :unprocessable_entity }
-      end
+    if @contract
+      flash[:success] = "Contract was successfully created."
+      redirect_to @contract
+    else
+      flash.now[:error] = "Contract creation failed."
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /contracts/1 or /contracts/1.json
   def update
-    p contract_params
-
-    respond_to do |format|
-      if @contract.update(contract_params)
-        if params[:contract][:new_files].present?
-          @contract.files.attach(params[:contract][:new_files])
-        end
-        if params[:contract][:existing_files].present?
-          params[:contract][:existing_files].each do |id, to_delete|
-            if to_delete == "1"
-              @contract.files.find(id.to_i).purge
-            end
-          end
-        end
-
-        format.html { redirect_to @contract, notice: "Contract was successfully updated." }
-        format.json { render :show, status: :ok, location: @contract }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contract.errors, status: :unprocessable_entity }
-      end
+    if @contract.update_with_files(
+      contract_params,
+      contract_params[:new_files],
+      contract_params[:existing_files]
+    )
+      flash[:success] = "Contract was successfully updated."
+      redirect_to @contract
+    else
+      flash.now[:error] = "Contract update failed."
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /contracts/1 or /contracts/1.json
   def destroy
-    begin
-      @contract.destroy
-      respond_to do |format|
-        format.html { redirect_to contracts_url, notice: "Contract was successfully destroyed." }
-        format.json { head :no_content }
-      end
-    rescue
-      respond_to do |format|
-        format.html { redirect_to contracts_url, notice: "Destruction failed. You must destroy all dependent records before destroying that contract." }
-        format.json { head :no_content }
-      end
+    @contract.destroy
+
+    if @contract.destroyed?
+      flash[:success] = "Contract was successfully destroyed."
+      redirect_to contracts_url
+    else
+      flash[:error] = "Contract destruction failed."
+      render :index, status: :unprocessable_entity
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_contract
     @contract = @current_user.contracts.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def contract_params
-    params.fetch(:contract, {}).permit(:notes, :buyer_id, :submission_id, existing_files: {}, new_files: [], files: [])
+    params.fetch(:contract, {}).permit(*Contract.fields)
   end
 end

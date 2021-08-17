@@ -5,66 +5,53 @@ class WorksController < ApplicationController
     @works = @current_user.works
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @work = Work.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
-    respond_to do |format|
-      ApplicationRecord.transaction do
-        @work = @current_user.works.build(work_params)
+    @work = @current_user.works.create_with_files(
+      work_params,
+      work_params[:new_files],
+      work_params[:existing_files]
+    )
 
-        if @work.save
-          if params[:work][:new_files].present?
-            @work.files.attach(params[:work][:new_files])
-          end
-
-          format.html { redirect_to @work, notice: "Work was successfully created." }
-          format.json { render :show, status: :created, location: @work }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @work.errors, status: :unprocessable_entity }
-        end
-      end
+    if @work
+      flash[:success] = "Work was successfully created."
+      redirect_to @work
+    else
+      flash.now[:error] = "Work creation failed."
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      ApplicationRecord.transaction do
-        if @work.update(work_params)
-          if params[:work][:new_files].present?
-            @work.files.attach(params[:work][:new_files])
-          end
-          if params[:work][:existing_files].present?
-            params[:work][:existing_files].each do |id, to_delete|
-              if to_delete == "1"
-                @work.files.find(id.to_i).purge
-              end
-            end
-          end
-
-          format.html { redirect_to @work, notice: "Work was successfully updated." }
-          format.json { render :show, status: :ok, location: @work }
-        else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @work.errors, status: :unprocessable_entity }
-        end
-      end
+    if @work.update_with_files(
+      work_params,
+      work_params[:new_files],
+      work_params[:existing_files]
+    )
+      flash[:success] = "Work was successfully updated."
+      redirect_to @work
+    else
+      flash.now[:error] = "Work update failed."
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @work.destroy
-    respond_to do |format|
-      format.html { redirect_to works_url, notice: "Work was successfully destroyed." }
-      format.json { head :no_content }
+
+    if @work.destroyed?
+      flash[:success] = "Work was successfully destroyed."
+      redirect_to works_url
+    else
+      flash.now[:success] = "Work destruction failed."
+      redirect_to works_url, status: :unprocessable_entity
     end
   end
 
@@ -75,6 +62,19 @@ class WorksController < ApplicationController
   end
 
   def work_params
-    params.fetch(:work, {}).permit(:stage, :title, existing_files: {}, new_files: [], files: [])
+    params.fetch(:work, {}).permit(
+      :stage,
+      :title,
+      existing_files: {},
+      new_files: [],
+      files: [],
+      licenses_attributes: [
+        :id,
+        :contract_id,
+        :user_id,
+        existing_files: {},
+        new_files: [],
+        files: []
+      ])
   end
 end

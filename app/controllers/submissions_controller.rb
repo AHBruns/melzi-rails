@@ -3,78 +3,62 @@ class SubmissionsController < ApplicationController
 
   def index
     @submissions = @current_user.submissions
-    if params[:user_id].present?
-      @submissions = @submissions.where(user_id: params[:user_id])
-    end
-    if params[:buyer_id].present?
-      @submissions = @submissions.where(buyer_id: params[:buyer_id])
-    end
-    if params[:work_id].present?
-      @submissions = @submissions.where(work_id: params[:work_id])
-    end
-    @submissions = @submissions.all
+    @submissions = @submissions.where(buyer_id: params[:buyer_id]) if params[:buyer_id].present?
+    @submissions = @submissions.where(work_id: params[:work_id]) if params[:work_id].present?
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @submission = Submission.new
-    @buyers = @current_user.buyers.all
-    @works = @current_user.works.all
+    @buyers = @current_user.buyers
+    @works = @current_user.works
   end
 
   def edit
-    @buyers = @current_user.buyers.all
-    @works = @current_user.works.all
+    @buyers = @current_user.buyers
+    @works = @current_user.works
   end
 
   def create
-    @submission = @current_user.submissions.create(submission_params)
+    @submission = @current_user.submissions.create_with_files(
+      submission_params,
+      submission_params[:new_files],
+      submission_params[:existing_files]
+    )
 
-    respond_to do |format|
-      if @submission.save
-        if params[:submission][:new_files].present?
-          @submission.files.attach(params[:submission][:new_files])
-        end
-
-        format.html { redirect_to @submission, notice: "Submission was successfully created." }
-        format.json { render :show, status: :created, location: @submission }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @submission.errors, status: :unprocessable_entity }
-      end
+    if @submission
+      flash[:success] = "Submission was successfully created."
+      redirect_to @submission
+    else
+      flash.now[:error] = "Submission creation failed."
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @submission.update(submission_params)
-        if params[:submission][:new_files].present?
-          @submission.files.attach(params[:submission][:new_files])
-        end
-        if params[:submission][:existing_files].present?
-          params[:submission][:existing_files].each do |id, to_delete|
-            if to_delete == "1"
-              @submission.files.find(id.to_i).purge
-            end
-          end
-        end
-
-        format.html { redirect_to @submission, notice: "Submission was successfully updated." }
-        format.json { render :show, status: :ok, location: @submission }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @submission.errors, status: :unprocessable_entity }
-      end
+    if @submission.update_with_files(
+      submission_params,
+      submission_params[:new_files],
+      submission_params[:existing_files]
+    )
+      flash[:success] = "Submission was successfully updated."
+      redirect_to @submission
+    else
+      flash.now[:error] = "Submission update failed."
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @submission.destroy
-    respond_to do |format|
-      format.html { redirect_to submissions_url, notice: "Submission was successfully destroyed." }
-      format.json { head :no_content }
+
+    if @submission.destroyed?
+      flash[:success] = "Submission was successfully destroyed."
+      redirect_to submissions_url
+    else
+      flash.now[:error] = "Submission destruction failed."
+      redirect_to submissions_url, status: :unprocessable_entity
     end
   end
 

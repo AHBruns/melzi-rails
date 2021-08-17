@@ -1,23 +1,5 @@
 <%= form_with(model: @license) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @license.errors) do %>
-    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :contract_id, label: "Contract") do %>
-      <%= render Inputs::CollectionSelectFieldComponent.new(
-        form: form,
-        method: :contract_id,
-        collection: @current_user.contracts,
-        value_method: :id,
-        text_method: :short_description
-      ) %>
-    <% end %>
-    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :work_id, label: "Work") do %>
-      <%= render Inputs::CollectionSelectFieldComponent.new(
-        form: form,
-        method: :work_id,
-        collection: @current_user.works,
-        value_method: :id,
-        text_method: :short_description
-      ) %>
-    <% end %>
-    <%= render Forms::FilesSectionsComponent.new(form: form, files: @license.files) %>
+    <%= render Forms::LicenseFieldsetComponent.new(form: form, license: @license, current_user: @current_user) %>
   <% end %>
 <% end %>

@@ -1,0 +1,23 @@
+<% unless @excluded_fields === :contract_id %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :contract_id, label: "Contract") do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :contract_id,
+      collection: @current_user.contracts,
+      value_method: :id,
+      text_method: :short_description
+    ) %>
+  <% end %>
+<% end %>
+<% unless @excluded_fields === :work_id %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :work_id, label: "Work") do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :work_id,
+      collection: @current_user.works,
+      value_method: :id,
+      text_method: :short_description
+    ) %>
+  <% end %>
+<% end %>
+<%= render Forms::FilesSectionsComponent.new(form: @form, files: @license.files) %>

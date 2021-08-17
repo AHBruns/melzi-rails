@@ -1,5 +1,5 @@
 <div class="p-8 space-y-8">
   <%= render Pages::PageHeaderComponent.new.with_content("New Work") %>
-  <%= render Forms::WorkFormComponent.new(work: @work) %>
+  <%= render Forms::WorkFormComponent.new(work: @work, current_user: @current_user) %>
   <%= render Buttons::WhiteButtonComponent.new(url: works_path).with_content("All Works") %>
 </div>

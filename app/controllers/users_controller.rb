@@ -2,7 +2,7 @@ require 'securerandom'
 require 'digest'
 
 class UsersController < ApplicationController
-  skip_before_action :require_current_user, only: [:index, :show, :new, :create, :assume]
+  skip_before_action :login_required, only: [:index, :show, :new, :create, :assume]
   before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
