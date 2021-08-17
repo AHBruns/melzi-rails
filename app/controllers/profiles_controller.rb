@@ -8,7 +8,7 @@ class ProfilesController < ApplicationController
 
   def authenticate
     possible_matches = User.where(email: params[:email])
-    possible_matches = possible_matches.filter { |user| user.check_password params[:password] }
+    possible_matches = possible_matches.filter { |user| user.check_password(params[:password]) }
 
     if possible_matches.empty?
       session[:auth_fields] = {
@@ -47,7 +47,7 @@ class ProfilesController < ApplicationController
       redirect_to works_path
     else
       session[:auth_fields] = {
-        email: [:email],
+        email: params[:email],
         password: params[:password]
       }
       flash[:error] = "That email is already in use."
