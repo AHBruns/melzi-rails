@@ -3,8 +3,8 @@ class LicensesController < ApplicationController
 
   def index
     @licenses = @current_user.licenses
-    @licenses = @licenses.find_by_work_id(params[:work_id]) if params[:work_id].present?
-    @licenses = @licenses.find_by_contract_id(params[:contract_id]) if params[:contract_id].present?
+    @licenses = @licenses.where(work_id: params[:work_id]) if params[:work_id].present?
+    @licenses = @licenses.where(contract_id: params[:contract_id]) if params[:contract_id].present?
   end
 
   def show; end

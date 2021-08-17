@@ -7,7 +7,8 @@ class ProfilesController < ApplicationController
   def register; end
 
   def authenticate
-    possible_matches = User.find_by_email(params[:email]).filter { |user| user.check_password params[:password] }
+    possible_matches = User.where(email: params[:email])
+    possible_matches = possible_matches.filter { |user| user.check_password params[:password] }
 
     if possible_matches.empty?
       session[:auth_fields] = {

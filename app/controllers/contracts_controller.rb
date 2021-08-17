@@ -3,8 +3,8 @@ class ContractsController < ApplicationController
 
   def index
     @contracts = @current_user.contracts
-    @contracts = @contracts.find_by_buyer_id(params[:buyer_id]) if params[:buyer_id].present?
-    @contracts = @contracts.find_by_submission_id(params[:submission_id]) if params[:submission_id].present?
+    @contracts = @contracts.where(buyer_id: params[:buyer_id]) if params[:buyer_id].present?
+    @contracts = @contracts.where(submission_id: params[:submission_id]) if params[:submission_id].present?
   end
 
   def show; end
