@@ -1,0 +1,44 @@
+<% unless @excluded_fields === :submission_id %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :submission_id,
+    label: "Submission (if this contract is a direct result of a submission)"
+  ) do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :submission_id,
+      collection: @current_user.submissions,
+      value_method: :id,
+      text_method: :short_description,
+      options: { :include_blank => "None" }
+    ) %>
+  <% end %>
+<% end %>
+
+<% unless @excluded_fields === :buyer_id %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :buyer_id, label: "Buyer") do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :buyer_id,
+      collection: @current_user.buyers,
+      value_method: :id,
+      text_method: :short_description
+    ) %>
+  <% end %>
+<% end %>
+
+<%= render Forms::LicensesSectionComponent.new(
+  form: @form,
+  licenses: @contract.licenses,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:contract_id]
+) %>
+
+<% unless @excluded_fields === :notes %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :notes, label: "Notes") do %>
+    <%= render Inputs::TextFieldComponent.new(form: @form, name: :notes, value: @contract.notes) %>
+  <% end %>
+<% end %>
+
+<%= render Forms::FilesSectionsComponent.new(form: @form, files: @contract.files) %>

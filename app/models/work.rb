@@ -13,16 +13,17 @@ class Work < ApplicationRecord
     self.title
   end
 
-  def self.fields(depth = 5)
+  def self.fields(current_user, depth = 5)
     [
+      :user_id,
       :stage,
       :title,
       *self.file_fields,
       *if depth > 0
          [
-           licenses_attributes: License.fields(depth - 1),
-           submissions_attributes: Submission.fields(depth - 1),
-           contracts_attributes: Contract.fields(depth - 1)
+           licenses_attributes: License.fields(current_user, depth - 1),
+           submissions_attributes: Submission.fields(current_user, depth - 1),
+           contracts_attributes: Contract.fields(current_user, depth - 1)
          ]
        end
     ]

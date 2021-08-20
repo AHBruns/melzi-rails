@@ -11,14 +11,15 @@ class Buyer < ApplicationRecord
     self.name
   end
 
-  def self.fields(depth = 5)
+  def self.fields(current_user, depth = 5)
     [
+      :user_id,
       :name,
       *self.file_fields,
       *if depth > 0
          [
-           submissions_attributes: Submission.fields(depth - 1),
-           contracts_attributes: Contract.fields(depth - 1)
+           submissions_attributes: Submission.fields(current_user, depth - 1),
+           contracts_attributes: Contract.fields(current_user, depth - 1)
          ]
        end
     ]

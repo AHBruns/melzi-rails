@@ -62,7 +62,7 @@ class BuyersController < ApplicationController
   end
 
   def buyer_params
-    params.fetch(:buyer, {}).permit(*Buyer.fields)
+    params.fetch(:buyer, {}).permit(*Buyer.fields(@current_user))
   end
 end
 

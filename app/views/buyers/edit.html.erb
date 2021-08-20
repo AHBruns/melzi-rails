@@ -1,6 +1,6 @@
 <div class="p-8 space-y-8">
   <%= render Pages::PageHeaderComponent.new.with_content("Edit Buyer") %>
-  <%= render Forms::BuyerFormComponent.new(buyer: @buyer) %>
+  <%= render Forms::BuyerFormComponent.new(buyer: @buyer, current_user: @current_user) %>
   <div class="flex space-x-4">
     <%= render Buttons::WhiteButtonComponent.new(url: @buyer).with_content("Show") %>
     <%= render Buttons::WhiteButtonComponent.new(url: buyers_path).with_content("All Buyers") %>

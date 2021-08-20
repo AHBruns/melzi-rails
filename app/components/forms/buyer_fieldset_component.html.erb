@@ -1,0 +1,23 @@
+<% unless @excluded_fields === :name %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :name, label: "Name") do %>
+    <%= render Inputs::TextFieldComponent.new(form: @form, name: :name, value: @buyer.name) %>
+  <% end %>
+<% end %>
+
+<%= render Forms::SubmissionsSectionComponent.new(
+  form: @form,
+  submissions: @buyer.submissions,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:buyer_id]
+) %>
+
+<%= render Forms::ContractsSectionComponent.new(
+  form: @form,
+  contracts: @buyer.contracts,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:buyer_id]
+) %>
+
+<%= render Forms::FilesSectionsComponent.new(form: @form, files: @buyer.files) %>

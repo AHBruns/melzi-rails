@@ -1,0 +1,39 @@
+<% unless @excluded_fields === :work_id %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :work_id, label: "Work") do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :work_id,
+      collection: @current_user.works,
+      value_method: :id,
+      text_method: :short_description
+    ) %>
+  <% end %>
+<% end %>
+
+<% unless @excluded_fields === :buyer_id %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :buyer_id, label: "Buyer") do %>
+    <%= render Inputs::CollectionSelectFieldComponent.new(
+      form: @form,
+      method: :buyer_id,
+      collection: @current_user.buyers,
+      value_method: :id,
+      text_method: :short_description
+    ) %>
+  <% end %>
+<% end %>
+
+<% unless @excluded_fields === :status %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :status, label: "Status") do %>
+    <%= render Inputs::SelectFieldComponent.new(form: @form, method: :status, choices: Submission.statuses.keys) %>
+  <% end %>
+<% end %>
+
+<%= render Forms::ContractsSectionComponent.new(
+  form: @form,
+  contracts: @submission.contracts,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:submission_id]
+) %>
+
+<%= render Forms::FilesSectionsComponent.new(form: @form, files: @submission.files) %>

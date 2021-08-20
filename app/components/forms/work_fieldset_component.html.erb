@@ -1,37 +1,29 @@
-<%= render Inputs::LabeledFieldComponent.new(form: @form, key: :stage, label: "Stage") do %>
-  <%= render Inputs::SelectFieldComponent.new(form: @form, method: :stage, choices: Work.stages.keys) %>
+<% unless @excluded_fields === :stage %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :stage, label: "Stage") do %>
+    <%= render Inputs::SelectFieldComponent.new(form: @form, method: :stage, choices: Work.stages.keys) %>
+  <% end %>
 <% end %>
-<%= render Inputs::LabeledFieldComponent.new(form: @form, key: :title, label: "Title") do %>
-  <%= render Inputs::TextFieldComponent.new(form: @form, name: :title, value: @work.title) %>
-<% end %>
-<%= render Inputs::LabeledFieldComponent.new(form: @form, key: :licenses, label: "Licenses") do %>
-  <div class="space-y-4" data-controller="nested-form">
-    <template data-nested-form-target="template">
-      <% @form.fields_for :licenses, @current_user.licenses.new, child_index: "TEMPLATE_INDEX" do |license_form| %>
-        <%= render Misc::CardComponent.new do %>
-          <div class="p-4 space-y-4">
-            <%= render Forms::LicenseFieldsetComponent.new(form: license_form, license: @current_user.licenses.new, current_user: @current_user, excluded_fields: Set[:work_id]) %>
-          </div>
-          <%= license_form.hidden_field(:user_id, { value: @current_user.id }) %>
-        <% end %>
-      <% end %>
-    </template>
 
-    <%= render Misc::CardComponent.new do %>
-      <div class="p-4 space-y-4" data-nested-form-target="container">
-        <% @work.licenses.each do |license| %>
-          <%= @form.fields_for :licenses, license do |license_form| %>
-            <%= render Misc::CardComponent.new do %>
-              <div class="space-y-4">
-                <%= render Forms::LicenseFieldsetComponent.new(form: license_form, license: license, current_user: @current_user) %>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Add", options: { data: { action: "nested-form#append" } }) %>
-  </div>
+<% unless @excluded_fields === :title %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :title, label: "Title") do %>
+    <%= render Inputs::TextFieldComponent.new(form: @form, name: :title, value: @work.title) %>
+  <% end %>
 <% end %>
+
+<%= render Forms::SubmissionsSectionComponent.new(
+  form: @form,
+  submissions: @work.submissions,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:work_id]
+) %>
+
+<%= render Forms::LicensesSectionComponent.new(
+  form: @form,
+  licenses: @work.licenses,
+  current_user: @current_user,
+  excluded_fields: @excluded_fields,
+  excluded_nested_fields: Set[:work_id]
+) %>
+
 <%= render Forms::FilesSectionsComponent.new(form: @form, files: @work.files) %>

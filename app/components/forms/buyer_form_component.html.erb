@@ -1,8 +1,5 @@
 <%= form_with(model: @buyer) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @buyer.errors) do %>
-    <%= render Inputs::LabeledFieldComponent.new(form: form, key: :name, label: "Name") do %>
-      <%= render Inputs::TextFieldComponent.new(form: form, name: :name, value: @buyer.name) %>
-    <% end %>
-    <%= render Forms::FilesSectionsComponent.new(form: form, files: @buyer.files) %>
+    <%= render Forms::BuyerFieldsetComponent.new(form: form, buyer: @buyer, current_user: @current_user) %>
   <% end %>
 <% end %>

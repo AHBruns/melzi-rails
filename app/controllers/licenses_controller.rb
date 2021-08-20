@@ -66,6 +66,6 @@ class LicensesController < ApplicationController
   end
 
   def license_params
-    params.fetch(:license, {}).permit(*License.fields)
+    params.fetch(:license, {}).permit(*License.fields(@current_user))
   end
 end

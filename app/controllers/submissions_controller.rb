@@ -69,6 +69,6 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params.fetch(:submission, {}).permit(:status, :buyer_id, :work_id, existing_files: {}, new_files: [], files: [])
+    params.fetch(:submission, {}).permit(*Submission.fields(@current_user))
   end
 end

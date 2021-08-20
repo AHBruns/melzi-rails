@@ -14,11 +14,13 @@ class WorksController < ApplicationController
   def edit; end
 
   def create
+    p work_params
     @work = @current_user.works.create_with_files(
       work_params,
       work_params[:new_files],
       work_params[:existing_files]
     )
+    p @work
 
     if @work
       flash[:success] = "Work was successfully created."
@@ -62,19 +64,6 @@ class WorksController < ApplicationController
   end
 
   def work_params
-    params.fetch(:work, {}).permit(
-      :stage,
-      :title,
-      existing_files: {},
-      new_files: [],
-      files: [],
-      licenses_attributes: [
-        :id,
-        :contract_id,
-        :user_id,
-        existing_files: {},
-        new_files: [],
-        files: []
-      ])
+    params.fetch(:work, {}).permit(*Work.fields(@current_user))
   end
 end

@@ -1,16 +1,15 @@
 import {Controller} from "stimulus"
 
 export default class extends Controller {
-    static targets = ["template", "container"]
-
-    parser = new DOMParser()
+    static targets = ["template", "container", "source"]
+    static values = {
+        templateIndex: String
+    }
 
     append(event) {
-        window.temp = this.containerTarget;
-        console.log("executing", this.containerTarget)
         event.preventDefault();
-        const content = this.templateTarget.innerHTML.replace(/TEMPLATE_INDEX/g, Date.now());
-        this.containerTarget.appendChild(this.parser.parseFromString(content, 'text/html').body.firstChild);
+        const content = this.templateTarget.innerHTML.replaceAll(this.templateIndexValue, Date.now());
+        this.sourceTarget.insertAdjacentHTML('beforebegin', content)
     }
 
     remove(event) {

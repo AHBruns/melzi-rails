@@ -13,16 +13,17 @@ class Contract < ApplicationRecord
     "Contract With #{self.buyer.short_description} (#{self.id})"
   end
 
-  def self.fields(depth = 5)
+  def self.fields(current_user, depth = 5)
     [
+      :user_id,
       :notes,
       :buyer_id,
       :submission_id,
       *self.file_fields,
       *if depth > 0
          [
-           licenses_attributes: License.fields(depth - 1),
-           works_attributes: Work.fields(depth - 1)
+           licenses_attributes: License.fields(current_user, depth - 1),
+           works_attributes: Work.fields(current_user, depth - 1)
          ]
        end
     ]

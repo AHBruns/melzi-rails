@@ -10,8 +10,9 @@ class License < ApplicationRecord
     "License For #{self.work.short_description} (#{self.id})"
   end
 
-  def self.fields(depth = 5)
+  def self.fields(current_user, depth = 5)
     [
+      :user_id,
       :work_id,
       :contract_id,
       *self.file_fields

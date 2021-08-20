@@ -10,18 +10,19 @@ class Submission < ApplicationRecord
   accepts_nested_attributes_for :contracts
 
   def short_description
-    "#{self.work.short_description} ⇒ #{self.buyer.short_description} "
+    "#{(self.work || Work.new).short_description} ⇒ #{(self.buyer || Buyer.new).short_description} "
   end
 
-  def self.fields(depth = 5)
+  def self.fields(current_user, depth = 5)
     [
+      :user_id,
       :status,
       :buyer_id,
       :work_id,
       *self.file_fields,
       *if depth > 0
          [
-           contracts_attributes: Contract.fields(depth - 1)
+           contracts_attributes: Contract.fields(current_user, depth - 1)
          ]
        end
     ]

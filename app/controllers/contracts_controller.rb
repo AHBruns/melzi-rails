@@ -64,6 +64,6 @@ class ContractsController < ApplicationController
   end
 
   def contract_params
-    params.fetch(:contract, {}).permit(*Contract.fields)
+    params.fetch(:contract, {}).permit(*Contract.fields(@current_user))
   end
 end

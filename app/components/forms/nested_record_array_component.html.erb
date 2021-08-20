@@ -1,0 +1,21 @@
+<% unless @excluded_fields === @key %>
+  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: @key, label: @label) do %>
+    <div data-controller="nested-form" data-nested-form-template-index-value="<%= @template_index %>">
+      <template data-nested-form-target="template">
+        <%= template %>
+      </template>
+
+      <%= render Misc::CardComponent.new do %>
+        <div class="p-4 space-y-4" data-nested-form-target="container">
+          <% existing_records.each do |record| %>
+            <%= record %>
+          <% end %>
+
+          <div data-nested-form-target="source">
+            <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Add", options: { data: { action: "nested-form#append" } }) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
