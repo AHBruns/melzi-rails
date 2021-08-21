@@ -1,13 +1,13 @@
 class Work < ApplicationRecord
   belongs_to :user
-  has_many :submissions
-  has_many :licenses
+  has_many :submissions, dependent: :destroy
+  has_many :licenses, dependent: :destroy
   has_many :contracts, through: :licenses
   enum stage: [:Draft, :Written]
   has_many_attached :files
 
   attr_accessor :new_files, :existing_files
-  accepts_nested_attributes_for :submissions, :licenses, :contracts
+  accepts_nested_attributes_for :submissions, :licenses, :contracts, allow_destroy: true
 
   def short_description
     self.title
@@ -15,6 +15,8 @@ class Work < ApplicationRecord
 
   def self.fields(current_user, depth = 5)
     [
+      :id,
+      :_destroy,
       :user_id,
       :stage,
       :title,

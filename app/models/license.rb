@@ -12,6 +12,8 @@ class License < ApplicationRecord
 
   def self.fields(current_user, depth = 5)
     [
+      :id,
+      :_destroy,
       :user_id,
       :work_id,
       :contract_id,

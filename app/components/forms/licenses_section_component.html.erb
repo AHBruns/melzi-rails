@@ -8,32 +8,45 @@
 ) do |c| %>
   <% c.template do %>
     <% @form.fields_for :licenses, License.new, child_index: template_index do |license_form| %>
-      <%= render Misc::CardComponent.new do %>
-        <div class="p-4 space-y-4">
-          <%= render Forms::LicenseFieldsetComponent.new(
-            form: license_form,
-            license: License.new,
-            current_user: @current_user,
-            excluded_fields: @excluded_nested_fields
-          ) %>
+      <div class="flex space-x-4 items-start __container">
+        <div class="flex-1">
+          <%= render Misc::CardComponent.new do %>
+            <div class="p-4 space-y-4 __fields">
+              <%= render Forms::LicenseFieldsetComponent.new(
+                form: license_form,
+                license: License.new,
+                current_user: @current_user,
+                excluded_fields: @excluded_nested_fields
+              ) %>
+            </div>
+          <% end %>
         </div>
         <%= license_form.hidden_field(:user_id, { value: @current_user.id }) %>
-      <% end %>
+        <%= license_form.hidden_field(:_destroy) %>
+        <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+      </div>
     <% end %>
   <% end %>
   <% @licenses.each do |license| %>
     <% c.existing_record do %>
       <% @form.fields_for :licenses, license do |license_form| %>
-        <%= render Misc::CardComponent.new do %>
-          <div class="p-4 space-y-4">
-            <%= render Forms::LicenseFieldsetComponent.new(
-              form: license_form,
-              license: license,
-              current_user: @current_user,
-              excluded_fields: @excluded_nested_fields
-            ) %>
+        <div class="flex space-x-4 items-start __container __existing">
+          <div class="flex-1">
+            <%= render Misc::CardComponent.new do %>
+              <div class="p-4 space-y-4 __fields">
+                <%= render Forms::LicenseFieldsetComponent.new(
+                  form: license_form,
+                  license: license,
+                  current_user: @current_user,
+                  excluded_fields: @excluded_nested_fields
+                ) %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
+          <%= license_form.hidden_field(:id, { value: license.id }) %>
+          <%= license_form.hidden_field(:_destroy) %>
+          <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+        </div>
       <% end %>
     <% end %>
   <% end %>

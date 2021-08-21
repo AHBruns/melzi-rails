@@ -14,13 +14,11 @@ class WorksController < ApplicationController
   def edit; end
 
   def create
-    p work_params
     @work = @current_user.works.create_with_files(
       work_params,
       work_params[:new_files],
       work_params[:existing_files]
     )
-    p @work
 
     if @work
       flash[:success] = "Work was successfully created."

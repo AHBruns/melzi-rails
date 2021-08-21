@@ -22,6 +22,7 @@ class ApplicationRecord < ActiveRecord::Base
   def update_with_files(attributes, new_files = nil, existing_files = nil)
     status = 0
     ApplicationRecord.transaction do
+      p attributes
       status = self.update(attributes)
       self.handle_files(new_files, existing_files) if status
     end

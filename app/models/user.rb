@@ -1,13 +1,13 @@
 class User < ApplicationRecord
-  has_many :buyers
-  has_many :submissions
-  has_many :works
-  has_many :contracts
-  has_many :licenses
+  has_many :buyers, dependent: :destroy
+  has_many :submissions, dependent: :destroy
+  has_many :works, dependent: :destroy
+  has_many :contracts, dependent: :destroy
+  has_many :licenses, dependent: :destroy
   has_many_attached :files
   
   attr_accessor :password, :new_files, :existing_files
-  accepts_nested_attributes_for :buyers, :submissions, :works, :contracts, :licenses
+  accepts_nested_attributes_for :buyers, :submissions, :works, :contracts, :licenses, allow_destroy: true
 
   validates :email, uniqueness: true
 

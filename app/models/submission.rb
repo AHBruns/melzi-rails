@@ -2,12 +2,12 @@ class Submission < ApplicationRecord
   belongs_to :user
   belongs_to :buyer
   belongs_to :work
-  has_many :contracts
+  has_many :contracts, dependent: :destroy
   enum status: [:Open, :Accepted, :Rejected]
   has_many_attached :files
 
   attr_accessor :new_files, :existing_files
-  accepts_nested_attributes_for :contracts
+  accepts_nested_attributes_for :contracts, allow_destroy: true
 
   def short_description
     "#{(self.work || Work.new).short_description} ⇒ #{(self.buyer || Buyer.new).short_description} "
@@ -15,6 +15,8 @@ class Submission < ApplicationRecord
 
   def self.fields(current_user, depth = 5)
     [
+      :id,
+      :_destroy,
       :user_id,
       :status,
       :buyer_id,

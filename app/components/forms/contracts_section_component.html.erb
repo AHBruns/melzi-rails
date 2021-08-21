@@ -8,32 +8,45 @@
 ) do |c| %>
   <% c.template do %>
     <% @form.fields_for :contracts, Contract.new, child_index: template_index do |contract_form| %>
-      <%= render Misc::CardComponent.new do %>
-        <div class="p-4 space-y-4">
-          <%= render Forms::ContractFieldsetComponent.new(
-            form: contract_form,
-            contract: Contract.new,
-            current_user: @current_user,
-            excluded_fields: @excluded_nested_fields
-          ) %>
+      <div class="flex space-x-4 items-start __container">
+        <div class="flex-1">
+          <%= render Misc::CardComponent.new do %>
+            <div class="p-4 space-y-4">
+              <%= render Forms::ContractFieldsetComponent.new(
+                form: contract_form,
+                contract: Contract.new,
+                current_user: @current_user,
+                excluded_fields: @excluded_nested_fields
+              ) %>
+            </div>
+          <% end %>
         </div>
         <%= contract_form.hidden_field(:user_id, { value: @current_user.id }) %>
-      <% end %>
+        <%= contract_form.hidden_field(:_destroy) %>
+        <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+      </div>
     <% end %>
   <% end %>
   <% @contracts.each do |contract| %>
     <% c.existing_record do %>
       <% @form.fields_for :contracts, contract do |contract_form| %>
-        <%= render Misc::CardComponent.new do %>
-          <div class="p-4 space-y-4">
-            <%= render Forms::ContractFieldsetComponent.new(
-              form: contract_form,
-              contract: contract,
-              current_user: @current_user,
-              excluded_fields: @excluded_nested_fields
-            ) %>
+        <div class="flex space-x-4 items-start __container __existing">
+          <div class="flex-1">
+            <%= render Misc::CardComponent.new do %>
+              <div class="p-4 space-y-4">
+                <%= render Forms::ContractFieldsetComponent.new(
+                  form: contract_form,
+                  contract: contract,
+                  current_user: @current_user,
+                  excluded_fields: @excluded_nested_fields
+                ) %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
+          <%= contract_form.hidden_field(:id, { value: contract.id }) %>
+          <%= contract_form.hidden_field(:_destroy) %>
+          <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+        </div>
       <% end %>
     <% end %>
   <% end %>

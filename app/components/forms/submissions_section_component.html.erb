@@ -8,32 +8,45 @@
 ) do |c| %>
   <% c.template do %>
     <% @form.fields_for :submissions, Submission.new, child_index: template_index do |submission_form| %>
-      <% render Misc::CardComponent.new do %>
-        <div class="p-4 space-y-4">
-          <%= render Forms::SubmissionFieldsetComponent.new(
-            form: submission_form,
-            submission: Submission.new,
-            current_user: @current_user,
-            excluded_fields: @excluded_nested_fields
-          ) %>
+      <div class="flex space-x-4 items-start __container">
+        <div class="flex-1">
+          <%= render Misc::CardComponent.new do %>
+            <div class="p-4 space-y-4 __fields">
+              <%= render Forms::SubmissionFieldsetComponent.new(
+                form: submission_form,
+                submission: Submission.new,
+                current_user: @current_user,
+                excluded_fields: @excluded_nested_fields
+              ) %>
+            </div>
+          <% end %>
         </div>
         <%= submission_form.hidden_field(:user_id, { value: @current_user.id }) %>
-      <% end %>
+        <%= submission_form.hidden_field(:_destroy) %>
+        <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+      </div>
     <% end %>
   <% end %>
   <% @submissions.each do |submission| %>
     <% c.existing_record do %>
-      <%= @form.fields_for :submissions, submission do |submission_form| %>
-        <%= render Misc::CardComponent.new do %>
-          <div class="space-y-4">
-            <%= render Forms::SubmissionFieldsetComponent.new(
-              form: submission_form,
-              submission: submission,
-              current_user: @current_user,
-              excluded_fields: @excluded_nested_fields
-            ) %>
+      <% @form.fields_for :submissions, submission do |submission_form| %>
+        <div class="flex space-x-4 items-start __container __existing">
+          <div class="flex-1">
+            <%= render Misc::CardComponent.new do %>
+              <div class="p-4 space-y-4 __fields">
+                <%= render Forms::SubmissionFieldsetComponent.new(
+                  form: submission_form,
+                  submission: submission,
+                  current_user: @current_user,
+                  excluded_fields: @excluded_nested_fields
+                ) %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
+          <%= submission_form.hidden_field(:id, { value: submission.id }) %>
+          <%= submission_form.hidden_field(:_destroy) %>
+          <%= render Buttons::V2::WhiteButtonComponent.new(content_or_options: "Remove", options: { data: { action: "nested-form#remove" } }) %>
+        </div>
       <% end %>
     <% end %>
   <% end %>
