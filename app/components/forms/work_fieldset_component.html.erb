@@ -1,11 +1,23 @@
 <% unless @excluded_fields === :stage %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :stage, label: "Stage") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :stage,
+    label: "Stage",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::SelectFieldComponent.new(form: @form, method: :stage, choices: Work.stages.keys) %>
   <% end %>
 <% end %>
 
 <% unless @excluded_fields === :title %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :title, label: "Title") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :title,
+    label: "Title",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::TextFieldComponent.new(form: @form, name: :title, value: @work.title) %>
   <% end %>
 <% end %>
@@ -15,7 +27,9 @@
   submissions: @work.submissions,
   current_user: @current_user,
   excluded_fields: @excluded_fields,
-  excluded_nested_fields: Set[:work_id]
+  excluded_nested_fields: Set[:work_id],
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) %>
 
 <%= render Forms::LicensesSectionComponent.new(
@@ -23,7 +37,14 @@
   licenses: @work.licenses,
   current_user: @current_user,
   excluded_fields: @excluded_fields,
-  excluded_nested_fields: Set[:work_id]
+  excluded_nested_fields: Set[:work_id],
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) %>
 
-<%= render Forms::FilesSectionsComponent.new(form: @form, files: @work.files) %>
+<%= render Forms::FilesSectionsComponent.new(
+  form: @form,
+  files: @work.files,
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
+) %>

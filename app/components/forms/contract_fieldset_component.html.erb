@@ -2,7 +2,9 @@
   <%= render Inputs::LabeledFieldComponent.new(
     form: @form,
     key: :submission_id,
-    label: "Submission (if this contract is a direct result of a submission)"
+    label: "Submission (if this contract is a direct result of a submission)",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
   ) do %>
     <%= render Inputs::CollectionSelectFieldComponent.new(
       form: @form,
@@ -16,7 +18,13 @@
 <% end %>
 
 <% unless @excluded_fields === :buyer_id %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :buyer_id, label: "Buyer") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :buyer_id,
+    label: "Buyer",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::CollectionSelectFieldComponent.new(
       form: @form,
       method: :buyer_id,
@@ -33,13 +41,26 @@
   licenses: @contract.licenses,
   current_user: @current_user,
   excluded_fields: @excluded_fields,
-  excluded_nested_fields: Set[:contract_id]
+  excluded_nested_fields: Set[:contract_id],
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) %>
 
 <% unless @excluded_fields === :notes %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :notes, label: "Notes") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :notes,
+    label: "Notes",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::TextFieldComponent.new(form: @form, name: :notes, value: @contract.notes) %>
   <% end %>
 <% end %>
 
-<%= render Forms::FilesSectionsComponent.new(form: @form, files: @contract.files) %>
+<%= render Forms::FilesSectionsComponent.new(
+  form: @form,
+  files: @contract.files,
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
+) %>

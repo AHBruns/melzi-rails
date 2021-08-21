@@ -1,7 +1,7 @@
 class Buyer < ApplicationRecord
   belongs_to :user
-  has_many :submissions, dependent: :destroy
-  has_many :contracts, dependent: :destroy
+  has_many :submissions, dependent: :destroy, index_errors: true
+  has_many :contracts, dependent: :destroy, index_errors: true
   has_many_attached :files
 
   attr_accessor :new_files, :existing_files

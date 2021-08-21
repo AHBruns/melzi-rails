@@ -4,14 +4,16 @@
   key: :contracts,
   label: "Contracts",
   template_index: template_index,
-  excluded_fields: @excluded_fields
+  excluded_fields: @excluded_fields,
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) do |c| %>
   <% c.template do %>
     <% @form.fields_for :contracts, Contract.new, child_index: template_index do |contract_form| %>
       <div class="flex space-x-4 items-start __container">
         <div class="flex-1">
           <%= render Misc::CardComponent.new do %>
-            <div class="p-4 space-y-4">
+            <div class="p-4 space-y-4 __fields">
               <%= render Forms::ContractFieldsetComponent.new(
                 form: contract_form,
                 contract: Contract.new,
@@ -27,18 +29,20 @@
       </div>
     <% end %>
   <% end %>
-  <% @contracts.each do |contract| %>
+  <% @contracts.each_with_index do |contract, index| %>
     <% c.existing_record do %>
       <% @form.fields_for :contracts, contract do |contract_form| %>
         <div class="flex space-x-4 items-start __container __existing">
           <div class="flex-1">
             <%= render Misc::CardComponent.new do %>
-              <div class="p-4 space-y-4">
+              <div class="p-4 space-y-4 __fields">
                 <%= render Forms::ContractFieldsetComponent.new(
                   form: contract_form,
                   contract: contract,
                   current_user: @current_user,
-                  excluded_fields: @excluded_nested_fields
+                  excluded_fields: @excluded_nested_fields,
+                  errors: @errors,
+                  errors_key_prefix: "#{@errors_key_prefix}#{'.' if @errors_key_prefix.present?}contracts[#{index}]"
                 ) %>
               </div>
             <% end %>

@@ -1,4 +1,13 @@
-<div class="space-y-1">
+<div class="space-y-1 flex flex-col">
   <%= @form.label(@key, @label) %>
+  <% if @errors.present? %>
+    <div class="p-4 bg-red-100 rounded-md border border-red-600 text-red-600 shadow-sm">
+      <ul class="list-disc ml-6">
+        <% @errors.each do |error| %>
+          <li class="text-sm"><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   <%= content %>
 </div>

@@ -1,5 +1,11 @@
 <% unless @excluded_fields === :work_id %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :work_id, label: "Work") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :work_id,
+    label: "Work",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::CollectionSelectFieldComponent.new(
       form: @form,
       method: :work_id,
@@ -12,7 +18,13 @@
 <% end %>
 
 <% unless @excluded_fields === :buyer_id %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :buyer_id, label: "Buyer") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :buyer_id,
+    label: "Buyer",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::CollectionSelectFieldComponent.new(
       form: @form,
       method: :buyer_id,
@@ -25,7 +37,13 @@
 <% end %>
 
 <% unless @excluded_fields === :status %>
-  <%= render Inputs::LabeledFieldComponent.new(form: @form, key: :status, label: "Status") do %>
+  <%= render Inputs::LabeledFieldComponent.new(
+    form: @form,
+    key: :status,
+    label: "Status",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
+  ) do %>
     <%= render Inputs::SelectFieldComponent.new(form: @form, method: :status, choices: Submission.statuses.keys) %>
   <% end %>
 <% end %>
@@ -35,7 +53,14 @@
   contracts: @submission.contracts,
   current_user: @current_user,
   excluded_fields: @excluded_fields,
-  excluded_nested_fields: Set[:submission_id]
+  excluded_nested_fields: Set[:submission_id],
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) %>
 
-<%= render Forms::FilesSectionsComponent.new(form: @form, files: @submission.files) %>
+<%= render Forms::FilesSectionsComponent.new(
+  form: @form,
+  files: @submission.files,
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
+) %>

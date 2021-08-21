@@ -1,4 +1,10 @@
-<%= render Inputs::LabeledFieldComponent.new(form: @form, key: :new_files, label: "Files To Attach") do %>
+<%= render Inputs::LabeledFieldComponent.new(
+  form: @form,
+  key: :new_files,
+  label: "Files To Attach",
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
+) do %>
   <%= render Inputs::FileFieldComponent.new(form: @form, method: :new_files, options: { multiple: true }) %>
 <% end %>
 
@@ -6,7 +12,9 @@
   <%= render Inputs::LabeledFieldComponent.new(
     form: @form,
     key: :existing_files,
-    label: "Existing Files (check to delete)"
+    label: "Existing Files (check to delete)",
+    errors: @errors,
+    errors_key_prefix: @errors_key_prefix
   ) do %>
     <ul class="flex flex-col items-start space-y-2">
       <% @files.each do |file| %>

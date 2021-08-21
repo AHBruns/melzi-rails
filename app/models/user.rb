@@ -1,9 +1,9 @@
 class User < ApplicationRecord
-  has_many :buyers, dependent: :destroy
-  has_many :submissions, dependent: :destroy
-  has_many :works, dependent: :destroy
-  has_many :contracts, dependent: :destroy
-  has_many :licenses, dependent: :destroy
+  has_many :buyers, dependent: :destroy, index_errors: true
+  has_many :submissions, dependent: :destroy, index_errors: true
+  has_many :works, dependent: :destroy, index_errors: true
+  has_many :contracts, dependent: :destroy, index_errors: true
+  has_many :licenses, dependent: :destroy, index_errors: true
   has_many_attached :files
   
   attr_accessor :password, :new_files, :existing_files

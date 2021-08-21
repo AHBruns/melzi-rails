@@ -4,7 +4,9 @@
   key: :licenses,
   label: "Licenses",
   excluded_fields: @excluded_fields,
-  template_index: template_index
+  template_index: template_index,
+  errors: @errors,
+  errors_key_prefix: @errors_key_prefix
 ) do |c| %>
   <% c.template do %>
     <% @form.fields_for :licenses, License.new, child_index: template_index do |license_form| %>
@@ -27,7 +29,7 @@
       </div>
     <% end %>
   <% end %>
-  <% @licenses.each do |license| %>
+  <% @licenses.each_with_index do |license, index| %>
     <% c.existing_record do %>
       <% @form.fields_for :licenses, license do |license_form| %>
         <div class="flex space-x-4 items-start __container __existing">
@@ -38,7 +40,9 @@
                   form: license_form,
                   license: license,
                   current_user: @current_user,
-                  excluded_fields: @excluded_nested_fields
+                  excluded_fields: @excluded_nested_fields,
+                  errors: @errors,
+                  errors_key_prefix: "#{@errors_key_prefix}#{'.' if @errors_key_prefix.present?}licenses[#{index}]"
                 ) %>
               </div>
             <% end %>

@@ -1,5 +1,10 @@
 <%= form_with(model: @buyer) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @buyer.errors) do %>
-    <%= render Forms::BuyerFieldsetComponent.new(form: form, buyer: @buyer, current_user: @current_user) %>
+    <%= render Forms::BuyerFieldsetComponent.new(
+      form: form,
+      buyer: @buyer,
+      current_user: @current_user,
+      errors: @buyer.errors
+    ) %>
   <% end %>
 <% end %>

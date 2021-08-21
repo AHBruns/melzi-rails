@@ -1,5 +1,10 @@
 <%= form_with(model: @license) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @license.errors) do %>
-    <%= render Forms::LicenseFieldsetComponent.new(form: form, license: @license, current_user: @current_user) %>
+    <%= render Forms::LicenseFieldsetComponent.new(
+      form: form,
+      license: @license,
+      current_user: @current_user,
+      errors: @license.errors
+    ) %>
   <% end %>
 <% end %>

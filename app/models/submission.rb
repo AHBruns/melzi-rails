@@ -2,7 +2,7 @@ class Submission < ApplicationRecord
   belongs_to :user
   belongs_to :buyer
   belongs_to :work
-  has_many :contracts, dependent: :destroy
+  has_many :contracts, dependent: :destroy, index_errors: true
   enum status: [:Open, :Accepted, :Rejected]
   has_many_attached :files
 

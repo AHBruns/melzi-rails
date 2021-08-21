@@ -1,15 +1,14 @@
 <%= render Misc::CardComponent.new do %>
   <div class="p-4 space-y-4">
-    <% if @errors.any? %>
-      <div>
-        <h2><%= pluralize(@errors.count, "error") %> prohibited this from saving:</h2>
-        <ul>
-          <% @errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%# if @errors.any? %>
+<!--      <div class="p-4 bg-red-100 rounded-md border border-red-600 text-red-600 shadow-sm">-->
+<!--        <ul class="list-disc ml-4">-->
+          <%# @errors.each do |error| %>
+<!--            <li class="text-sm"><%#= error.full_message %></li>-->
+          <%# end %>
+<!--        </ul>-->
+<!--      </div>-->
+    <%# end %>
     <%= content %>
     <%= render Buttons::PrimaryButtonComponent.new(form: @form).with_content("Submit") %>
   </div>

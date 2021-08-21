@@ -1,5 +1,10 @@
 <%= form_with(model: @submission) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @submission.errors) do %>
-    <%= render Forms::SubmissionFieldsetComponent.new(form: form, submission: @submission, current_user: @current_user) %>
+    <%= render Forms::SubmissionFieldsetComponent.new(
+      form: form,
+      submission: @submission,
+      current_user: @current_user,
+      errors: @submission.errors
+    ) %>
   <% end %>
 <% end %>

@@ -1,5 +1,10 @@
 <%= form_with(model: @work) do |form| %>
   <%= render Forms::BaseFormComponent.new(form: form, errors: @work.errors) do %>
-    <%= render Forms::WorkFieldsetComponent.new(form: form, work: @work, current_user: @current_user) %>
+    <%= render Forms::WorkFieldsetComponent.new(
+      form: form,
+      work: @work,
+      current_user: @current_user,
+      errors: @work.errors
+    ) %>
   <% end %>
 <% end %>

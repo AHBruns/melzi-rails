@@ -1,8 +1,8 @@
 class Work < ApplicationRecord
   belongs_to :user
-  has_many :submissions, dependent: :destroy
-  has_many :licenses, dependent: :destroy
-  has_many :contracts, through: :licenses
+  has_many :submissions, dependent: :destroy, index_errors: true
+  has_many :licenses, dependent: :destroy, index_errors: true
+  has_many :contracts, through: :licenses, index_errors: true
   enum stage: [:Draft, :Written]
   has_many_attached :files
 

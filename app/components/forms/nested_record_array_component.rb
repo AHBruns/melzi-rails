@@ -9,12 +9,16 @@ class Forms::NestedRecordArrayComponent < ViewComponent::Base
     key:,
     label:,
     template_index:,
-    excluded_fields: Set[]
+    excluded_fields: Set[],
+    errors: {},
+    errors_key_prefix: ''
   )
     @form = form
     @key = key
     @label = label
     @template_index = template_index
     @excluded_fields = excluded_fields
+    @errors = errors
+    @errors_key_prefix = errors_key_prefix
   end
 end
