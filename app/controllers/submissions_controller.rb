@@ -27,7 +27,7 @@ class SubmissionsController < ApplicationController
       submission_params[:existing_files]
     )
 
-    if @submission
+    if @submission.persisted?
       flash[:success] = "Submission was successfully created."
       redirect_to @submission
     else

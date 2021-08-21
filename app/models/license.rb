@@ -6,6 +6,8 @@ class License < ApplicationRecord
   
   attr_accessor :new_files, :existing_files
 
+  validates :user, :work, :contract, presence: true
+
   def short_description
     "License For #{self.work.short_description} (#{self.id})"
   end

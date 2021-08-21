@@ -5,7 +5,8 @@
       method: :work_id,
       collection: @current_user.works,
       value_method: :id,
-      text_method: :short_description
+      text_method: :short_description,
+      options: { prompt: "Please select" }
     ) %>
   <% end %>
 <% end %>
@@ -17,7 +18,8 @@
       method: :buyer_id,
       collection: @current_user.buyers,
       value_method: :id,
-      text_method: :short_description
+      text_method: :short_description,
+      options: { prompt: "Please select" }
     ) %>
   <% end %>
 <% end %>

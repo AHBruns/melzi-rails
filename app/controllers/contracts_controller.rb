@@ -22,7 +22,7 @@ class ContractsController < ApplicationController
       params[:contract][:existing_files]
     )
 
-    if @contract
+    if @contract.persisted?
       flash[:success] = "Contract was successfully created."
       redirect_to @contract
     else

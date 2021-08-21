@@ -20,7 +20,7 @@ class WorksController < ApplicationController
       work_params[:existing_files]
     )
 
-    if @work
+    if @work.persisted?
       flash[:success] = "Work was successfully created."
       redirect_to @work
     else

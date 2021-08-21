@@ -22,7 +22,7 @@ class LicensesController < ApplicationController
       license_params[:existing_files]
     )
 
-    if @license
+    if @license.persisted?
       flash[:success] = "License was successfully created."
       redirect_to @license
     else

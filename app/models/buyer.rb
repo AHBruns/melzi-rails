@@ -7,6 +7,9 @@ class Buyer < ApplicationRecord
   attr_accessor :new_files, :existing_files
   accepts_nested_attributes_for :submissions, :contracts, allow_destroy: true
 
+  validates_associated :submissions, :contracts
+  validates :name, :user, presence: true
+
   def short_description
     self.name
   end

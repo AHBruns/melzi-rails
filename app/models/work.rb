@@ -9,6 +9,9 @@ class Work < ApplicationRecord
   attr_accessor :new_files, :existing_files
   accepts_nested_attributes_for :submissions, :licenses, :contracts, allow_destroy: true
 
+  validates_associated :submissions, :licenses, :contracts
+  validates :stage, :title, :user, presence: true
+
   def short_description
     self.title
   end

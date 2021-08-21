@@ -9,10 +9,12 @@ class User < ApplicationRecord
   attr_accessor :password, :new_files, :existing_files
   accepts_nested_attributes_for :buyers, :submissions, :works, :contracts, :licenses, allow_destroy: true
 
-  validates :email, uniqueness: true
+  before_validation :populate_salt, if: :salt.blank?
+  before_validation :populate_salted_password_hash, if: :salted_password_hash.blank?
 
-  before_create :populate_salt, if: :salt.blank?
-  before_create :populate_salted_password_hash, if: :salted_password_hash.blank?
+  validates_associated :buyers, :submissions, :works, :contracts, :licenses
+  validates :email, :salt, :salted_password_hash, presence: true
+  validates :email, uniqueness: true
 
   def short_description
     self.email

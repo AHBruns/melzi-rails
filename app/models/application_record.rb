@@ -11,18 +11,17 @@ class ApplicationRecord < ActiveRecord::Base
 
   # with files
   def self.create_with_files(attributes, new_files = nil, existing_files = nil)
-    record = false
+    record = self.new
     ApplicationRecord.transaction do
       record = self.create(attributes)
-      record.handle_files(new_files, existing_files) if record
+      record.handle_files(new_files, existing_files) if record.persisted?
     end
     record
   end
 
   def update_with_files(attributes, new_files = nil, existing_files = nil)
-    status = 0
+    status = false
     ApplicationRecord.transaction do
-      p attributes
       status = self.update(attributes)
       self.handle_files(new_files, existing_files) if status
     end

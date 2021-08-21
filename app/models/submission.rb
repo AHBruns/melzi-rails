@@ -9,6 +9,9 @@ class Submission < ApplicationRecord
   attr_accessor :new_files, :existing_files
   accepts_nested_attributes_for :contracts, allow_destroy: true
 
+  validates_associated :contracts
+  validates :status, :user, :buyer, :work, presence: true
+
   def short_description
     "#{(self.work || Work.new).short_description} ⇒ #{(self.buyer || Buyer.new).short_description} "
   end

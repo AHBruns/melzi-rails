@@ -20,7 +20,7 @@ class BuyersController < ApplicationController
       buyer_params[:existing_files]
     )
 
-    if @buyer
+    if @buyer.persisted?
       flash[:success] = "Buyer was successfully created."
       redirect_to @buyer
     else
