@@ -1,0 +1,18 @@
+<div class="p-8 space-y-8">
+  <div class="space-y-2">
+    <%= render Pages::PageHeaderComponent.new.with_content("Search Results") %>
+    <p class="font-bold tracking-wider leading-tight">For <i><%= @query %></i></p>
+  </div>
+  <%= render DataTables::TableComponent.new(
+    headers: ['Confidence', 'Type', 'Short Description'],
+    action_headers: %w[Show],
+    rows: @data.map do |d|
+      [
+        d[:lcs] + d[:longest_common_substring],
+        d[:record].class.name,
+        d[:record].short_description,
+        render(Misc::StyledLinkToComponent.new(name: "Show", options: d[:record]))
+      ]
+    end
+  ) %>
+</div>

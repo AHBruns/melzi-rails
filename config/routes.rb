@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'search/search'
   resources :licenses, :contracts, :submissions, :buyers, :works
 
   resources :users do
@@ -17,5 +18,5 @@ Rails.application.routes.draw do
   get "/profiles/unauthenticate", to: "profiles#unauthenticate"
   post "/profiles/authenticate", to: "profiles#authenticate"
   post "/profiles/create", to: "profiles#create"
-  
+  get "/search/results", to: "search#results"
 end

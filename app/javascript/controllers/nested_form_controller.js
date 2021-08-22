@@ -1,5 +1,4 @@
 import {Controller} from "stimulus"
-import {contrast} from "tailwindcss/lib/plugins";
 
 export default class extends Controller {
     static targets = ["template", "container", "source"]
