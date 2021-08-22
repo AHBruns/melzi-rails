@@ -1,0 +1,35 @@
+<div class="flex flex-col space-y-4 items-center justify-center w-screen h-screen p-8">
+  <div class="p-4 bg-gray-100 space-y-4 flex flex-col items-start rounded-md shadow-2xl border border-gray-400 w-full max-w-md">
+    <p class="tracking-wider leading-tight text-gray-800">
+      You must verify your email to continue.
+      An email was sent
+      to <%= render Misc::BadgeComponent.new(color_classes: { _: 'bg-indigo-100 text-indigo-800' }, key: :_).with_content(@current_user.email) %>
+      .
+    </p>
+    <div class="flex space-x-4">
+      <%= render Buttons::SecondaryButtonComponent.new(url_options: {
+        controller: :profiles,
+        action: :send_verification_email
+      }).with_content("Resend") %>
+      <%= render Buttons::PrimaryButtonComponent.new(url_options: {
+        controller: :profiles,
+        action: :verify_email
+      }).with_content("Continue") %>
+    </div>
+    <% if flash[:error] %>
+      <div class="p-4 bg-red-100 border border-red-600 shadow-sm rounded-md">
+        <p class="text-sm tracking-wider leading-tight text-red-600"><%= flash[:error] %></p>
+      </div>
+    <% end %>
+    <% if flash[:notice] %>
+      <div class="p-4 bg-yellow-100 border border-yellow-600 shadow-sm rounded-md">
+        <p class="text-sm tracking-wider leading-tight text-yellow-600"><%= flash[:notice] %></p>
+      </div>
+    <% end %>
+    <% if flash[:success] %>
+      <div class="p-4 bg-green-100 border border-green-600 shadow-sm rounded-md">
+        <p class="text-sm tracking-wider leading-tight text-green-600"><%= flash[:success] %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

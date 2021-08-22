@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_28_234404) do
+ActiveRecord::Schema.define(version: 2021_08_22_064450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,14 @@ ActiveRecord::Schema.define(version: 2021_07_28_234404) do
     t.index ["user_id"], name: "index_contracts_on_user_id"
   end
 
+  create_table "email_verification_tokens", force: :cascade do |t|
+    t.string "token"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_email_verification_tokens_on_user_id"
+  end
+
   create_table "licenses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "work_id", null: false
@@ -92,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_07_28_234404) do
     t.string "salt", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "email_verified", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
@@ -110,6 +119,7 @@ ActiveRecord::Schema.define(version: 2021_07_28_234404) do
   add_foreign_key "contracts", "buyers"
   add_foreign_key "contracts", "submissions"
   add_foreign_key "contracts", "users"
+  add_foreign_key "email_verification_tokens", "users"
   add_foreign_key "licenses", "contracts"
   add_foreign_key "licenses", "users"
   add_foreign_key "licenses", "works"

@@ -45,6 +45,8 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "melzi_rails_production"
 
+  config.action_mailer.default_url_options = { host: 'melzi.io' }
+
   config.action_mailer.perform_caching = false
 
   ActionMailer::Base.smtp_settings = Rails.application.credentials.dig(:sendgrid, :smtp)

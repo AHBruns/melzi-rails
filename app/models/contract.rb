@@ -9,8 +9,8 @@ class Contract < ApplicationRecord
   attr_accessor :new_files, :existing_files
   accepts_nested_attributes_for :licenses, :works, allow_destroy: true
 
-  validates_associated :licenses, :works
-  validates :notes, :user, :buyer, :submission, presence: true
+  validates_associated :licenses
+  validates :notes, :user, :buyer, presence: true
 
   def short_description
     "Contract With #{self.buyer.short_description} (#{self.id})"

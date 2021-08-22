@@ -1,10 +1,26 @@
 class ProfilesController < ApplicationController
   layout "auth"
-  skip_before_action :login_required, only: [:login, :authenticate, :register, :create]
+  skip_before_action :login_required,
+                     :email_verification_required,
+                     only: [:login, :authenticate, :register, :create, :verify_email, :send_verification_email]
 
   def login; end
 
   def register; end
+
+  def verify_email
+    if email_verified?
+      redirect_to works_path
+    elsif params[:token].present?
+      user = EmailVerificationToken.find_by_token(params[:token]).user
+      user.email_verified = true
+      flash[:success] = "Your email is now verified."
+      if user.save
+        redirect_to works_path
+        user.email_verification_tokens.destroy_all
+      end
+    end
+  end
 
   def authenticate
     possible_matches = User.where(email: params[:email])
@@ -43,6 +59,7 @@ class ProfilesController < ApplicationController
 
     if @user.save
       GodMailer.with(user: @user).new_sign_up.deliver_later
+      UserMailer.with(user: @user).verify_email.deliver_later
       session.delete(:auth_fields)
       session[:user_id] = @user.id
       redirect_to works_path
@@ -54,6 +71,12 @@ class ProfilesController < ApplicationController
       flash[:error] = "That email is already in use."
       redirect_to :register
     end
+  end
+
+  def send_verification_email
+    UserMailer.with(user: @current_user).verify_email.deliver_later
+    flash[:success] = "Another verification email has been sent."
+    redirect_to action: :verify_email
   end
 
   private
