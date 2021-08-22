@@ -42,6 +42,7 @@ class ProfilesController < ApplicationController
     @user = User.new(email: params[:email], password: params[:password])
 
     if @user.save
+      GodMailer.with(user: @user).new_sign_up.deliver_later
       session.delete(:auth_fields)
       session[:user_id] = @user.id
       redirect_to works_path

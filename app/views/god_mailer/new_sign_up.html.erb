@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+</head>
+<body>
+<p>Melzi just signed up a new user!</p>
+<hr />
+<pre><%= JSON.pretty_generate(JSON.parse(@user.to_json)) %></pre>
+</body>
+</html>
