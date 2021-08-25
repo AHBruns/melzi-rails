@@ -58,13 +58,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 ######################
 
 gem "audited", "~> 4.9"
-
 gem "tailwindcss-rails", "~> 0.3.3"
-
 gem "view_component", require: "view_component/engine"
-
 gem 'digest'
-
 gem 'aws-sdk-s3'
-
 gem 'turbo-rails'
+gem 'sidekiq'

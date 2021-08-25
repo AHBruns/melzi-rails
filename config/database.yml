@@ -3,20 +3,8 @@ base: &base
   encoding: unicode
   pool: 5
 
-#production:
-#  <<: *base
-#  database: <%#= Rails.application.credentials.dig(:digitalocean, :db, :database) %>
-#  username: <%#= Rails.application.credentials.dig(:digitalocean, :db, :username) %>
-#  password: <%#= Rails.application.credentials.dig(:digitalocean, :db, :password) %>
-#  host: <%#= Rails.application.credentials.dig(:digitalocean, :db, :host) %>
-#  port: <%#= Rails.application.credentials.dig(:digitalocean, :db, :port) %>
-
 development:
-  <<: *base
-  database: melzi_development
-  username: ahb
-  password:
-  timeout: 5000
+  url: <%= Rails.application.credentials.dig(:digitalocean, :db, :development, :postgresql, :url) %>
 
 test:
   <<: *base
