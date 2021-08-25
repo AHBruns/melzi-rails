@@ -3,13 +3,13 @@ base: &base
   encoding: unicode
   pool: 5
 
-production:
-  <<: *base
-  database: <%= Rails.application.credentials.dig(:digitalocean, :db, :database) %>
-  username: <%= Rails.application.credentials.dig(:digitalocean, :db, :username) %>
-  password: <%= Rails.application.credentials.dig(:digitalocean, :db, :password) %>
-  host: <%= Rails.application.credentials.dig(:digitalocean, :db, :host) %>
-  port: <%= Rails.application.credentials.dig(:digitalocean, :db, :port) %>
+#production:
+#  <<: *base
+#  database: <%#= Rails.application.credentials.dig(:digitalocean, :db, :database) %>
+#  username: <%#= Rails.application.credentials.dig(:digitalocean, :db, :username) %>
+#  password: <%#= Rails.application.credentials.dig(:digitalocean, :db, :password) %>
+#  host: <%#= Rails.application.credentials.dig(:digitalocean, :db, :host) %>
+#  port: <%#= Rails.application.credentials.dig(:digitalocean, :db, :port) %>
 
 development:
   <<: *base
