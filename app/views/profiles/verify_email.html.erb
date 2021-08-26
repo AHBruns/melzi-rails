@@ -11,10 +11,7 @@
         controller: :profiles,
         action: :send_verification_email
       }).with_content("Resend") %>
-      <%= render Buttons::PrimaryButtonComponent.new(url_options: {
-        controller: :profiles,
-        action: :works
-      }).with_content("Continue") %>
+      <%= render Buttons::PrimaryButtonComponent.new(url_options: works_path).with_content("Continue") %>
     </div>
     <% if flash[:error] %>
       <div class="p-4 bg-red-100 border border-red-600 shadow-sm rounded-md">
