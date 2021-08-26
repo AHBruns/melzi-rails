@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_22_064450) do
+ActiveRecord::Schema.define(version: 2021_08_25_080404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,14 @@ ActiveRecord::Schema.define(version: 2021_08_22_064450) do
     t.index ["work_id"], name: "index_licenses_on_work_id"
   end
 
+  create_table "password_reset_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
+  end
+
   create_table "submissions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "buyer_id", null: false
@@ -123,6 +131,7 @@ ActiveRecord::Schema.define(version: 2021_08_22_064450) do
   add_foreign_key "licenses", "contracts"
   add_foreign_key "licenses", "users"
   add_foreign_key "licenses", "works"
+  add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "submissions", "buyers"
   add_foreign_key "submissions", "users"
   add_foreign_key "submissions", "works"

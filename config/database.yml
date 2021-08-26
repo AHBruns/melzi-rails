@@ -1,14 +1,5 @@
-base: &base
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-
 development:
   url: <%= Rails.application.credentials.dig(:digitalocean, :db, :development, :postgresql, :url) %>
 
 test:
-  <<: *base
-  database: melzi_test
-  username: ahb
-  password:
-  timeout: 5000
+  url: <%= Rails.application.credentials.dig(:digitalocean, :db, :test, :postgresql, :url) %>
