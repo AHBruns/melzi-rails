@@ -13,7 +13,7 @@
       }).with_content("Resend") %>
       <%= render Buttons::PrimaryButtonComponent.new(url_options: {
         controller: :profiles,
-        action: :verify_email
+        action: :works
       }).with_content("Continue") %>
     </div>
     <% if flash[:error] %>
