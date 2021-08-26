@@ -1,14 +1,14 @@
-default&:
+default: &default
   adapter: postgresql
 
 development:
-  <<: default*
+  <<: *default
   url: <%= Rails.application.credentials.dig(:digitalocean, :db, :development, :postgresql, :url) %>
 
 test:
-  <<: default*
+  <<: *default
   url: <%= Rails.application.credentials.dig(:digitalocean, :db, :test, :postgresql, :url) %>
 
 production:
-  <<: default*
+  <<: *default
   url: <%= ENV["DATABASE_URL"] %>
