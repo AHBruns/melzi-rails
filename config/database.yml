@@ -3,3 +3,6 @@ development:
 
 test:
   url: <%= Rails.application.credentials.dig(:digitalocean, :db, :test, :postgresql, :url) %>
+
+production:
+  url: ENV["DATABASE_URL"]
