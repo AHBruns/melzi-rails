@@ -5,4 +5,5 @@ test:
   url: <%= Rails.application.credentials.dig(:digitalocean, :db, :test, :postgresql, :url) %>
 
 production:
+  adapter: postgresql
   url: <%= ENV["DATABASE_URL"] %>
