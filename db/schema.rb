@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_25_080404) do
+ActiveRecord::Schema.define(version: 2021_08_28_061729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,12 +63,13 @@ ActiveRecord::Schema.define(version: 2021_08_25_080404) do
     t.index ["user_id"], name: "index_contracts_on_user_id"
   end
 
-  create_table "email_verification_tokens", force: :cascade do |t|
-    t.string "token"
+  create_table "email_tokens", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.string "value", null: false
+    t.integer "kind", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_email_verification_tokens_on_user_id"
+    t.index ["user_id"], name: "index_email_tokens_on_user_id"
   end
 
   create_table "licenses", force: :cascade do |t|
@@ -80,14 +81,6 @@ ActiveRecord::Schema.define(version: 2021_08_25_080404) do
     t.index ["contract_id"], name: "index_licenses_on_contract_id"
     t.index ["user_id"], name: "index_licenses_on_user_id"
     t.index ["work_id"], name: "index_licenses_on_work_id"
-  end
-
-  create_table "password_reset_tokens", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "token"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_password_reset_tokens_on_user_id"
   end
 
   create_table "submissions", force: :cascade do |t|
@@ -127,11 +120,10 @@ ActiveRecord::Schema.define(version: 2021_08_25_080404) do
   add_foreign_key "contracts", "buyers"
   add_foreign_key "contracts", "submissions"
   add_foreign_key "contracts", "users"
-  add_foreign_key "email_verification_tokens", "users"
+  add_foreign_key "email_tokens", "users"
   add_foreign_key "licenses", "contracts"
   add_foreign_key "licenses", "users"
   add_foreign_key "licenses", "works"
-  add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "submissions", "buyers"
   add_foreign_key "submissions", "users"
   add_foreign_key "submissions", "works"

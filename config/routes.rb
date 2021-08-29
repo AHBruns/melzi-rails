@@ -1,35 +1,31 @@
 Rails.application.routes.draw do
-  get 'search/search'
+  root to: "auth#login"
+  
+  # meat and potatoes
   resources :licenses, :contracts, :submissions, :buyers, :works
+  
+  # email tokens
+  get 'melzi/:value', to: 'email_tokens#index', as: 'email_token'
+  
+  # email verification
+  get 'email_verification/required'
+  get 'email_verification/complete'
+  post 'email_verification/send_email', as: 'send_email_verification_email'
+  
+  # password recovery
+  get 'forgot-password', to: 'password_recovery#index', as: 'forgot_password'
+  get 'reset_password', to: 'password_recovery#reset_password', as: 'reset_password'
+  post 'password_recovery/send_email', as: 'send_password_recovery_email'
+  post 'password_recovery/complete'
+  
+  # search
+  get 'search', to: 'search#index'
 
-  resources :users do
-    member do
-      get :assume
-    end
-
-    collection do
-      get :unassume
-    end
-  end
-
-  get "/search/results", to: "search#results"
-
-  get "/", to: "profiles#login"
-  get "/login", to: "profiles#login"
-  get "/register", to: "profiles#register"
-  get "/email-verification-required", to: "profiles#verify_email"
-  get "/forgot-password", to: "profiles#forgot_password"
-  get "/reset-password", to: "profiles#reset_password"
-
-  # TODO: make this a POST
-  get "/profiles/unauthenticate", to: "profiles#unauthenticate"
-  post "/profiles/authenticate", to: "profiles#authenticate"
-  post "/profiles/create", to: "profiles#create"
-
-  post "/profiles/send-forgot-password-email", to: "profiles#send_forgot_password_email"
-  # TODO: make this a POST
-  get "/profiles/send-verification-email", to: "profiles#send_verification_email"
-
-  get "/email-verification-complete", to: "profiles#email_verification_complete"
-  get "/password-reset-complete", to: "profiles#password_reset_complete"
+  # auth
+  get 'login', to: 'auth#login', as: 'login'
+  get 'register', to: 'auth#register', as: 'register'
+  # TODO: convert to POST
+  get 'deauthenticate', to: 'auth#deauthenticate', as: 'deauthenticate'
+  post 'authenticate', to: 'auth#authenticate', as: 'authenticate'
+  post 'users/create', to: 'auth#create', as: 'create_user'
 end

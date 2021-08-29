@@ -1,1 +1,1 @@
-Click <%= link_to "here", url_for(controller: :profiles, action: :email_verification_complete, token: @token) %> to verify your email.
+Click <%= link_to "here", email_token_url(value: @token.value) %> to verify your email.

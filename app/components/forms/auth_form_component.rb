@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class Forms::AuthFormComponent < ViewComponent::Base
-  def initialize(action:, controller:)
-    @action = action
-    @controller = controller
+  def initialize(url:)
+    @url = url
   end
 end

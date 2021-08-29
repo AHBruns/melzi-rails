@@ -1,16 +1,14 @@
 <div class="flex flex-col space-y-4 items-center justify-center w-screen h-screen p-8">
   <div class="p-4 bg-gray-100 space-y-4 flex flex-col items-start rounded-md shadow-2xl border border-gray-400 w-full max-w-md">
     <p class="tracking-wider leading-tight text-gray-800">
-      You must verify your email to continue.
-      An email was sent
+      You must verify your email to continue. An email was sent
       to <%= render Misc::BadgeComponent.new(color_classes: { _: 'bg-indigo-100 text-indigo-800' }, key: :_).with_content(@current_user.email) %>
       .
     </p>
     <div class="flex space-x-4">
-      <%= render Buttons::SecondaryButtonComponent.new(url_options: {
-        controller: :profiles,
-        action: :send_verification_email
-      }).with_content("Resend") %>
+      <%= form_with(url: send_email_verification_email_path) do |form| %>
+        <%= render Buttons::PrimaryButtonComponent.new(form: form).with_content("Resend") %>
+      <% end %>
       <%= render Buttons::PrimaryButtonComponent.new(url_options: works_path).with_content("Continue") %>
     </div>
     <% if flash[:error] %>

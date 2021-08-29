@@ -1,7 +1,4 @@
-<%= form_with(
-      url: url_for(action: @action, controller: @controller),
-      class: "tracking-wider leading-tight text-gray-800 space-y-4"
-    ) do |form| %>
+<%= form_with(url: @url, class: "tracking-wider leading-tight text-gray-800 space-y-4") do |form| %>
   <%= render Inputs::LabeledFieldComponent.new(form: form, key: :email, label: "Email") do %>
     <%= render Inputs::EmailFieldComponent.new(
       form: form,

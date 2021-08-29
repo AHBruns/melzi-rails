@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  add_flash_types :success, :error
   before_action :set_current_user, :login_required, :email_verification_required
 
   private
@@ -16,15 +17,10 @@ class ApplicationController < ActionController::Base
   end
 
   def login_required
-    unless logged_in?
-      flash[:error] = 'You must be logged in to do that.'
-      redirect_to login_path
-    end
+    redirect_to login_path, flash: { error: "You must be logged in to do that." } unless logged_in?
   end
 
   def email_verification_required
-    unless email_verified?
-      redirect_to '/email-verification-required'
-    end
+    redirect_to email_verification_required_path unless email_verified?
   end
 end

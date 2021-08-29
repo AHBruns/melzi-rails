@@ -1,0 +1,9 @@
+<div class="p-4 sm:p-16 flex items-center justify-center min-h-screen">
+  <div class="max-w-md w-full flex flex-col space-y-4">
+    <h1 class="text-4xl tracking-wider leading-tight text-gray-800 font-extrabold">Login</h1>
+    <%= render Forms::AuthFormComponent.new(url: authenticate_path) %>
+    <%= render Misc::OrBarComponent.new %>
+    <%= render Buttons::SecondaryButtonComponent.new(url_options: register_path).with_content("Register") %>
+    <%= render Buttons::SecondaryButtonComponent.new(url_options: forgot_password_path).with_content("Forgot Password") %>
+  </div>
+</div>

@@ -4,8 +4,8 @@ class User < ApplicationRecord
   has_many :works, dependent: :destroy, index_errors: true
   has_many :contracts, dependent: :destroy, index_errors: true
   has_many :licenses, dependent: :destroy, index_errors: true
-  has_many :email_verification_tokens, dependent: :destroy, index_errors: true
   has_many :password_reset_tokens, dependent: :destroy, index_errors: true
+  has_many :email_tokens, dependent: :destroy, index_errors: true
   has_many_attached :files
   
   attr_accessor :password, :new_files, :existing_files
@@ -19,8 +19,8 @@ class User < ApplicationRecord
                        :works,
                        :contracts,
                        :licenses,
-                       :email_verification_tokens,
-                       :password_reset_tokens
+                       :password_reset_tokens,
+                       :email_tokens
   validates :email, :salt, :salted_password_hash, presence: true
   validates :email, uniqueness: true
 

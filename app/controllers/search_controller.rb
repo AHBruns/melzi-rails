@@ -103,7 +103,7 @@ end
 
 class SearchController < ApplicationController
 
-  def results
+  def index
     @query = " #{params[:q].downcase} "
 
     data = [
